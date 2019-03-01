@@ -32,3 +32,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 * [Javascript Airbnb](https://github.com/airbnb/javascript)
 * [CSS BEM](http://getbem.com/naming/)
+
+
+### AJAX request
+
+* [Organise ajax with VUE](https://itnext.io/anyway-heres-how-to-do-ajax-api-calls-with-vue-js-e71e57d5cf12)
