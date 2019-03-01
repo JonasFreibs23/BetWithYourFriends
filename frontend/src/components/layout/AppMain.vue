@@ -2,7 +2,6 @@
     <div>
         <main>
             <slot></slot>
-            <p>Content</p>
         </main>
     </div>
 </template>

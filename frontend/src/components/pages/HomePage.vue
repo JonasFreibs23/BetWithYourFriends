@@ -1,11 +1,20 @@
 <template>
     <div>
         <app-nav/>
-        <app-header/>
+        <app-header>
+        Bet
+        </app-header>
         <app-main>
-            <h1>Home page</h1>
-            <h2>Test</h2>
-            <app-card/>
+            <h2>Recent bet</h2>
+            <div class="md-layout">
+                <app-card v-for="bet in bets" :key="bet.id" class="md-layout-item">
+                    <template slot="title">{{bet.title}}</template>
+                    <template slot="date">{{bet.eventDate}}</template>
+                    <template slot="description">{{bet.description}}</template>
+                    <template slot="opt1">{{bet.winOpt1}}</template>
+                    <template slot="opt2">{{bet.winOpt2}}</template>
+                </app-card>
+            </div>
         </app-main>
         <app-footer/>
     </div>
@@ -17,6 +26,7 @@ import AppNav from '@/components/layout/AppNav'
 import AppMain from '@/components/layout/AppMain'
 import AppFooter from '@/components/layout/AppFooter'
 import AppCard from '@/components/ui/AppCard'
+import BetsApi from '@/services/api/Bets'
 
 export default {
   name: 'HomePage',
@@ -26,13 +36,25 @@ export default {
     AppMain,
     AppFooter,
     AppCard
+  },
+  data () {
+    return {
+      bets: []
+    }
+  },
+  created () {
+    BetsApi.getBets()
+      .then(bets => {
+        this.bets = bets
+        console.log(this.bets)
+      })
   }
 }
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
+h2{
+    text-align: left;
+    margin-left: 20px;
 }
 </style>

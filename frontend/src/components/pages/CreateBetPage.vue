@@ -4,6 +4,7 @@
         <app-header/>
         <app-main>
             <h1>Create a bet</h1>
+            <app-form/>
         </app-main>
         <app-footer/>
     </div>
@@ -14,6 +15,7 @@ import AppHeader from '@/components/layout/AppHeader'
 import AppNav from '@/components/layout/AppNav'
 import AppMain from '@/components/layout/AppMain'
 import AppFooter from '@/components/layout/AppFooter'
+import AppForm from '@/components/ui/AppForm'
 
 export default {
   name: 'CreateBetPage',
@@ -21,7 +23,8 @@ export default {
     AppHeader,
     AppNav,
     AppMain,
-    AppFooter
+    AppFooter,
+    AppForm
   }
 }
 </script>
