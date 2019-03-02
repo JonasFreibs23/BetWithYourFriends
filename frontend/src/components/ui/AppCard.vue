@@ -18,10 +18,10 @@
                 <md-divider></md-divider>
 
                 <md-card-actions>
-                    <md-button>
+                    <md-button class="md-primary">
                         <slot name="opt1"></slot>
                     </md-button>
-                    <md-button>
+                    <md-button class="md-primary">
                         <slot name="opt2"></slot>
                     </md-button>
                 </md-card-actions>

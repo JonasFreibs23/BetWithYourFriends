@@ -7,7 +7,8 @@
                     <label for="title">Nom de l'événement</label>
                     <md-input name="title" id="title" v-model="form.title" :disabled="sending" />
                     <span class="md-error" v-if="!$v.form.title.required">Le nom de l'événement est obligatoire</span>
-                    <span class="md-error" v-else-if="!$v.form.title.minlength">Nom d'événement invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.title.minlength">Nom de l'événement invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.title.alphaNum">Le nom de l'événement doit être composé de caractère alpha numeric</span>
                 </md-field>
 
                 <md-field :class="getValidationClass('description')">
@@ -15,6 +16,7 @@
                     <md-textarea name="description" id="description" v-model="form.description" :disabled="sending" />
                     <span class="md-error" v-if="!$v.form.description.required">La description de l'événement est obligatoire</span>
                     <span class="md-error" v-else-if="!$v.form.description.minlength">Le description de l'événement est invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.description.alphaNum">La description doit être composé de caractères alpha numeric</span>
                 </md-field>
 
                 <md-field :class="getValidationClass('option1')">
@@ -22,6 +24,7 @@
                     <md-input name="option1" id="option1" v-model="form.option1" :disabled="sending" />
                     <span class="md-error" v-if="!$v.form.option1.required">La première option de pari est obligatoire</span>
                     <span class="md-error" v-else-if="!$v.form.option1.minlength">La première option de pari est invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.option1.alphaNum">La première option doit être composé de caractères alpha numeric</span>
                 </md-field>
 
                 <md-field :class="getValidationClass('option2')">
@@ -29,16 +32,21 @@
                     <md-input name="option2" id="option2" v-model="form.option2" :disabled="sending" />
                     <span class="md-error" v-if="!$v.form.option2.required">La deuxième option de pari est obligatoire</span>
                     <span class="md-error" v-else-if="!$v.form.option2.minlength">La deuxième option de pari est invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.option2.alphaNum">La deuxième option doit être composé de caractères alpha numeric</span>
                 </md-field>
 
-                <md-datepicker :class="getValidationClass('eventDate')" name="eventDate" id="eventDate" v-model="form.eventDate" :disabled="sending">
+                <md-datepicker :class="getValidationClass('eventDate')" name="eventDate" id="eventDate" v-model="form.eventDate" :disabled="sending" md-immediately>
                     <label>Select date</label>
                     <span class="md-error" v-if="!$v.form.eventDate.required">La date de l'événement est obligatoire</span>
+                    <span class="md-error" v-else-if="!$v.form.eventDate.minValue">La date de l'événement doit être de aujourd'hui ou à venir</span>
                 </md-datepicker>
 
                 <md-field :class="getValidationClass('participationPrice')">
                     <label for="participationPrice">Prix de participation</label>
                     <md-input type="number" id="participationPrice" name="participationPrice" v-model="form.participationPrice" :disabled="sending" />
+                    <span class="md-error" v-if="!$v.form.participationPrice.required">Un prix de participation est requis</span>
+                    <span class="md-error" v-else-if="!$v.form.participationPrice.minValue">La valeur minimal est de 0</span>
+                    <span class="md-error" v-else-if="!$v.form.participationPrice.numeric">La valeur doit être numeric</span>
                 </md-field>
             </md-card-content>
 
@@ -47,6 +55,7 @@
             </md-card-actions>
         </md-card>
         <md-snackbar :md-active.sync="betSaved">Le pari {{ lastBet }} a été enregistré !</md-snackbar>
+        <md-snackbar :md-active.sync="betNotSaved">Le pari {{ lastBet }} n'a pas pu être enregistré !, erreur : {{ error }}</md-snackbar>
     </form>
 </div>
 </template>
@@ -54,7 +63,8 @@
 <script>
 // TODO : Improve validation
 import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, minLength, minValue, numeric, alphaNum } from 'vuelidate/lib/validators'
+import BetsApi from '@/services/api/Bets'
 
 export default {
   name: 'AppForm',
@@ -66,35 +76,44 @@ export default {
       option1: null,
       option2: null,
       participationPrice: null,
-      eventdate: null
+      eventDate: null
     },
     betSaved: false,
+    betNotSaved: false,
     sending: false,
-    lastBet: null
+    lastBet: null,
+    error: null
   }),
   validations: {
     form: {
       title: {
         required,
-        minLength: minLength(3)
+        minLength: minLength(3),
+        alphaNum
       },
       description: {
         required,
-        minLength: minLength(3)
+        minLength: minLength(3),
+        alphaNum
       },
       option1: {
         required,
-        maxLength: minLength(3)
+        maxLength: minLength(1),
+        alphaNum
       },
       option2: {
         required,
-        maxLength: minLength(3)
+        maxLength: minLength(1),
+        alphaNum
       },
       participationPrice: {
-        required
+        required,
+        numeric,
+        minValue: minValue(0)
       },
       eventDate: {
-        required
+        required,
+        minValue: minValue(new Date())
       }
     }
   },
@@ -118,15 +137,20 @@ export default {
       this.form.eventDate = null
     },
     saveBet () {
+      this.form.eventDate = this.form.eventDate.toISOString().split('T')[0]
       this.sending = true
-
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastBet = `${this.form.title}}`
+      BetsApi.createBet(this.form).then(response => {
+        this.lastBet = `${this.form.title}`
         this.betSaved = true
+        this.betNotSaved = false
         this.sending = false
         this.clearForm()
-      }, 1500)
+      }).catch(error => {
+        this.error = error
+        this.betSaved = false
+        this.betNotSaved = true
+        this.sending = false
+      })
     },
     validateBet () {
       this.$v.$touch()

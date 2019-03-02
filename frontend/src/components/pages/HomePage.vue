@@ -2,10 +2,10 @@
     <div>
         <app-nav/>
         <app-header>
-        Bet
+        Les paris
         </app-header>
         <app-main>
-            <h2>Recent bet</h2>
+            <h2>plus récents</h2>
             <div class="md-layout">
                 <app-card v-for="bet in bets" :key="bet.id" class="md-layout-item">
                     <template slot="title">{{bet.title}}</template>
@@ -46,7 +46,6 @@ export default {
     BetsApi.getBets()
       .then(bets => {
         this.bets = bets
-        console.log(this.bets)
       })
   }
 }
