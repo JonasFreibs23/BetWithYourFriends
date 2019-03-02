@@ -7,7 +7,7 @@
         <app-main>
             <h2>plus récents</h2>
             <div class="md-layout">
-                <app-card v-for="bet in bets" :key="bet.id" class="md-layout-item">
+                <app-card v-for="bet in bets" :key="bet.id" :betId="bet.id" class="md-layout-item">
                     <template slot="title">{{bet.title}}</template>
                     <template slot="date">{{bet.eventDate}}</template>
                     <template slot="description">{{bet.description}}</template>

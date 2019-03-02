@@ -2,7 +2,6 @@ import axios from 'axios'
 
 // TODO : change for prod version
 axios.defaults.baseURL = 'http://localhost:8000/bet/awa-g3-bet/backend'
-axios.defaults.withCredentials = false
 
 export default {
   name: 'BetsApi',
@@ -19,6 +18,14 @@ export default {
       option2: bet.option2,
       eventDate: bet.eventDate,
       participationPrice: bet.participationPrice
+    })
+  },
+  applyToBet (betId, betOpt, userId) {
+    // TODO : dynamic userId
+    return axios.post('/applyToBet', {
+      betId: betId,
+      betOpt: betOpt,
+      userId: userId
     })
   }
 }
