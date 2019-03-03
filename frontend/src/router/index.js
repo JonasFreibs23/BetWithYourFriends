@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HomePage from '@/components/pages/HomePage'
-import MyBetsPage from '@/components/pages/MyBetsPage'
+import UsersBetsPage from '@/components/pages/UsersBetsPage'
 import CreateBetPage from '@/components/pages/CreateBetPage'
 import BankPage from '@/components/pages/BankPage'
 import AboutPage from '@/components/pages/AboutPage'
@@ -22,8 +22,8 @@ export default new Router({
   },
   {
     path: '/my-bets',
-    name: 'MyBetsPage',
-    component: MyBetsPage
+    name: 'UsersBetsPage',
+    component: UsersBetsPage
   },
   {
     path: '/create-bet',

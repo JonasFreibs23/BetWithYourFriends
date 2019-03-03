@@ -1,9 +1,10 @@
 <template>
     <div>
         <app-nav/>
-        <app-header/>
+        <app-header>
+        Créer un pari
+        </app-header>
         <app-main>
-            <h1>Create a bet</h1>
             <app-form/>
         </app-main>
         <app-footer/>

@@ -1,9 +1,11 @@
 <template>
     <div>
         <app-nav/>
-        <app-header/>
+        <app-header>
+        Mes paris
+        </app-header>
         <app-main>
-            <h1>My bets</h1>
+          <app-sortable-table/>
         </app-main>
         <app-footer/>
     </div>
@@ -14,17 +16,16 @@ import AppHeader from '@/components/layout/AppHeader'
 import AppNav from '@/components/layout/AppNav'
 import AppMain from '@/components/layout/AppMain'
 import AppFooter from '@/components/layout/AppFooter'
+import AppSortableTable from '@/components/ui/AppSortableTable'
 
 export default {
-  name: 'MyBetsPage',
+  name: 'UsersBetsPage',
   components: {
     AppHeader,
     AppNav,
     AppMain,
-    AppFooter
+    AppFooter,
+    AppSortableTable
   }
 }
 </script>
-
-<style scoped>
-</style>

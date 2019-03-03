@@ -1,9 +1,10 @@
 <template>
     <div>
         <app-nav/>
-        <app-header/>
+        <app-header>
+        Mon compte en banque
+        </app-header>
         <app-main>
-            <h1>My bank account</h1>
         </app-main>
         <app-footer/>
     </div>

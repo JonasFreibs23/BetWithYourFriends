@@ -10,6 +10,29 @@ export default {
       return response.data
     })
   },
+  getUsersBets () {
+    return axios.get('/getUsersBets').then(response => {
+      let betIds = []
+      response.data.forEach(bet => {
+        betIds.push(bet.betId)
+      })
+      return betIds
+    })
+  },
+  getBetByIds (ids) {
+    let bets = {}
+    let promises = []
+    for (let id of ids) {
+      promises.push(axios.get('/getBetById?betId=' + id))
+    }
+    return axios.all(promises).then(results => {
+      results.forEach(result => {
+        bets[result.data[0].title] = result.data[0]
+      })
+      console.log(bets)
+      return bets
+    })
+  },
   createBet (bet) {
     return axios.post('/createBet', {
       title: bet.title,

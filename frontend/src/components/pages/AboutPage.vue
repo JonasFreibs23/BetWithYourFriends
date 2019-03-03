@@ -1,10 +1,10 @@
 <template>
     <div>
         <app-nav/>
-        <app-header/>
-        <app-main>
-            <h1>About</h1>
-        </app-main>
+        <app-header>
+        A propos
+        </app-header>
+        <app-main/>
         <app-footer/>
     </div>
 </template>

@@ -1,9 +1,10 @@
 <template>
     <div>
         <app-nav/>
-        <app-header/>
+        <app-header>
+        Login
+        </app-header>
         <app-main>
-            <h1>Login</h1>
             <app-stepper/>
         </app-main>
         <app-footer/>
