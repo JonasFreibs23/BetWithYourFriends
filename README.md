@@ -37,3 +37,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ### AJAX request
 
 * [Organise ajax with VUE](https://itnext.io/anyway-heres-how-to-do-ajax-api-calls-with-vue-js-e71e57d5cf12)
+
+### Todo
+
+* [ ] Make responsive
+* [ ] Pick colour palet
