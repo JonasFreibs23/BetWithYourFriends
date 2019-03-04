@@ -1,7 +1,7 @@
 <template>
 <div class="app-form">
-    <form novalidate class="md-layout" @submit.prevent="validateBet">
-        <md-card class="md-layout-item md-size-100 md-small-size-100">
+    <form novalidate class="md-layout md-alignment-center" @submit.prevent="validateBet">
+        <md-card class="md-layout-item md-size-80 md-small-size-100 md-xsmall-size-100">
             <md-card-content>
                 <md-field :class="getValidationClass('title')">
                     <label for="title">Nom de l'événement</label>
@@ -162,11 +162,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.app-form{
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-</style>

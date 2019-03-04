@@ -50,7 +50,6 @@ export default {
       // TODO : give feedback to user
       BetsApi.applyToBet(this.betId, betOpt, 1).then(response => {
         this.betSaved = true
-        console.log(response)
       }).catch(error => {
         this.betNotSaved = true
         console.log(error)

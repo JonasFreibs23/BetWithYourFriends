@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <md-table v-model="bets" md-sort="name" md-sort-order="asc" md-card>
+  <div class="md-layout md-alignment-center">
+    <md-table class="md-layout-item md-size-100 md-small-size-100 md-xsmall-size-100" v-model="bets" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
         <h1 class="md-title">Mes inscriptions aux paris</h1>
       </md-table-toolbar>
