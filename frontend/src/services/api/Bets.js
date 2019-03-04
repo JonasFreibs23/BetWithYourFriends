@@ -12,11 +12,7 @@ export default {
   },
   getUsersBets () {
     return axios.get('/getUsersBets').then(response => {
-      let betIds = []
-      response.data.forEach(bet => {
-        betIds.push(bet.betId)
-      })
-      return betIds
+      return response.data
     })
   },
   getBetByIds (ids) {
@@ -27,9 +23,8 @@ export default {
     }
     return axios.all(promises).then(results => {
       results.forEach(result => {
-        bets[result.data[0].title] = result.data[0]
+        bets[result.data[0].id] = result.data[0]
       })
-      console.log(bets)
       return bets
     })
   },

@@ -6,9 +6,12 @@
       </md-table-toolbar>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Event" md-numeric  md-sort-by="title">{{ item.title }}</md-table-cell>
+        <md-table-cell md-label="Event" md-sort-by="title">{{ item.title }}</md-table-cell>
         <md-table-cell md-label="Date" md-numeric md-sort-by="eventDate">{{ item.eventDate }}</md-table-cell>
+        <md-table-cell v-if="item.betOpt === '0'" md-label="Bet" md-sort-by="winOpt1">{{ item.winOpt1 }}</md-table-cell>
+        <md-table-cell v-else-if="item.betOpt === '1'" md-label="Bet" md-sort-by="winOpt2">{{ item.winOpt2 }}</md-table-cell>
         <md-table-cell md-label="Price" md-numeric md-sort-by="participationPrice">{{ item.participationPrice }}</md-table-cell>
+        <md-table-cell md-label="winningOption" md-sort-by="winningOption">{{ item.winningOption ? item.winningOption : "Pas encore défini" }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -26,8 +29,17 @@ export default {
   },
   created () {
     BetsApi.getUsersBets().then(usersBets => {
-      BetsApi.getBetByIds(usersBets).then(results => {
+      let betIds = []
+      let betOpt = []
+      usersBets.forEach(bet => {
+        betIds.push(bet.betId)
+        betOpt.push(bet.betOpt)
+      })
+      BetsApi.getBetByIds(betIds).then(results => {
         this.bets = Object.values(results)
+        for (let i = 0; i < this.bets.length; i++) {
+          this.bets[i]['betOpt'] = betOpt[i]
+        }
       })
     })
   }

@@ -5,7 +5,7 @@
             <md-card-content>
                 <md-field :class="getValidationClass('title')">
                     <label for="title">Nom de l'événement</label>
-                    <md-input name="title" id="title" v-model="form.title" :disabled="sending" />
+                    <md-input name="title" id="title" v-model="form.title" :disabled="sending" autofocus/>
                     <span class="md-error" v-if="!$v.form.title.required">Le nom de l'événement est obligatoire</span>
                     <span class="md-error" v-else-if="!$v.form.title.minlength">Nom de l'événement invalide</span>
                     <span class="md-error" v-else-if="!$v.form.title.alphaNum">Le nom de l'événement doit être composé de caractère alpha numeric</span>
