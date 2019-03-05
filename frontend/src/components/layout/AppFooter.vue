@@ -7,6 +7,7 @@
 </template>
 
 <script>
+// TODO : Push footer under content
 export default {
   name: 'AppFooter'
 }

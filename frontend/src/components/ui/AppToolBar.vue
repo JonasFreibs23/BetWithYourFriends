@@ -52,6 +52,12 @@ span:hover{
 .md-toolbar .md-tabs{
   padding-left: 0px;
 }
+.md-toolbar{
+  padding: 0px 0px 0px 0px;
+}
+.md-toolbar, .md-toolbar-row{
+  min-height: 0px;
+}
 .snack-menu{
   width: 100%;
 }
