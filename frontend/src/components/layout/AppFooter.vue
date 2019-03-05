@@ -14,10 +14,12 @@ export default {
 
 <style scoped>
 footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   text-align: center;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  background-color: #efefef;
+  text-align: center;
 }
 </style>

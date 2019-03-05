@@ -88,13 +88,11 @@ export default {
     form: {
       title: {
         required,
-        minLength: minLength(3),
-        alphaNum
+        minLength: minLength(3)
       },
       description: {
         required,
-        minLength: minLength(3),
-        alphaNum
+        minLength: minLength(3)
       },
       option1: {
         required,
