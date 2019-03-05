@@ -1,6 +1,13 @@
 <template>
     <div>
-        <app-nav/>
+        <app-tool-bar>
+          <slot slot="tab">
+            <app-nav/>
+          </slot>
+          <slot slot="responsiveTab">
+            <app-mobile-nav/>
+          </slot>
+        </app-tool-bar>
         <app-header>
         Mon compte en banque
         </app-header>
@@ -12,7 +19,9 @@
 
 <script>
 import AppHeader from '@/components/layout/AppHeader'
-import AppNav from '@/components/layout/AppNav'
+import AppToolBar from '@/components/layout/AppToolBar'
+import AppNav from '@/components/ui/AppNav'
+import AppMobileNav from '@/components/ui/AppMobileNav'
 import AppMain from '@/components/layout/AppMain'
 import AppFooter from '@/components/layout/AppFooter'
 
@@ -20,7 +29,9 @@ export default {
   name: 'BankPage',
   components: {
     AppHeader,
+    AppToolBar,
     AppNav,
+    AppMobileNav,
     AppMain,
     AppFooter
   }
