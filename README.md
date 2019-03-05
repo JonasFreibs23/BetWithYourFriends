@@ -42,3 +42,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 * [ ] Make responsive
 * [ ] Pick colour palet
+* [ ] Write php test
+* [ ] Write js test
+* [ ] Move model out from controller
