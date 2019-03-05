@@ -1,7 +1,7 @@
 <template>
     <div>
         <footer>
-            <p>Bet with your friends: Carraux Roxane, Freiburghaus Jonas</p>
+            <span>Bet with your friends: Carraux Roxane, Freiburghaus Jonas</span>
         </footer>
     </div>
 </template>
@@ -15,7 +15,7 @@ export default {
 
 <style scoped>
 footer {
-  position: absolute;
+  position: fixed;
   right: 0;
   bottom: 0;
   left: 0;
@@ -24,5 +24,7 @@ footer {
   text-align: center;
   width: 100%;
   height: 2.5rem;
+  vertical-align: middle;
+  line-height: 2.5rem;
 }
 </style>
