@@ -7,7 +7,7 @@
                     <label for="title">Nom de l'événement</label>
                     <md-input name="title" id="title" v-model="form.title" :disabled="sending" autofocus/>
                     <span class="md-error" v-if="!$v.form.title.required">Le nom de l'événement est obligatoire</span>
-                    <span class="md-error" v-else-if="!$v.form.title.minlength">Nom de l'événement invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.title.minlength">Le nom de l'événement doit comporter au moins 3 caractères</span>
                     <span class="md-error" v-else-if="!$v.form.title.alphaNum">Le nom de l'événement doit être composé de caractère alpha numeric</span>
                 </md-field>
 
@@ -15,7 +15,7 @@
                     <label for="description">Description de l'événement</label>
                     <md-textarea name="description" id="description" v-model="form.description" :disabled="sending" />
                     <span class="md-error" v-if="!$v.form.description.required">La description de l'événement est obligatoire</span>
-                    <span class="md-error" v-else-if="!$v.form.description.minlength">Le description de l'événement est invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.description.minlength">Le description de l'événement doit comporter au moins 3 caractères</span>
                     <span class="md-error" v-else-if="!$v.form.description.alphaNum">La description doit être composé de caractères alpha numeric</span>
                 </md-field>
 
@@ -23,7 +23,7 @@
                     <label for="option1">1er option de pari</label>
                     <md-input name="option1" id="option1" v-model="form.option1" :disabled="sending" />
                     <span class="md-error" v-if="!$v.form.option1.required">La première option de pari est obligatoire</span>
-                    <span class="md-error" v-else-if="!$v.form.option1.minlength">La première option de pari est invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.option1.minlength">La première option de pari doit comporter au moins 1 caractère</span>
                     <span class="md-error" v-else-if="!$v.form.option1.alphaNum">La première option doit être composé de caractères alpha numeric</span>
                 </md-field>
 
@@ -31,7 +31,7 @@
                     <label for="option2">2ème option de pari</label>
                     <md-input name="option2" id="option2" v-model="form.option2" :disabled="sending" />
                     <span class="md-error" v-if="!$v.form.option2.required">La deuxième option de pari est obligatoire</span>
-                    <span class="md-error" v-else-if="!$v.form.option2.minlength">La deuxième option de pari est invalide</span>
+                    <span class="md-error" v-else-if="!$v.form.option2.minlength">La deuxième option de pari doit comporter au moins 1 caractère</span>
                     <span class="md-error" v-else-if="!$v.form.option2.alphaNum">La deuxième option doit être composé de caractères alpha numeric</span>
                 </md-field>
 

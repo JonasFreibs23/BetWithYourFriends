@@ -12,7 +12,7 @@
         Créer un pari
         </app-header>
         <app-main>
-            <app-form/>
+            <app-bet-form/>
         </app-main>
         <app-footer/>
     </div>
@@ -25,7 +25,7 @@ import AppNav from '@/components/ui/AppNav'
 import AppMobileNav from '@/components/ui/AppMobileNav'
 import AppMain from '@/components/layout/AppMain'
 import AppFooter from '@/components/layout/AppFooter'
-import AppForm from '@/components/ui/AppForm'
+import AppBetForm from '@/components/ui/AppBetForm'
 
 export default {
   name: 'CreateBetPage',
@@ -36,7 +36,7 @@ export default {
     AppMobileNav,
     AppMain,
     AppFooter,
-    AppForm
+    AppBetForm
   }
 }
 </script>
