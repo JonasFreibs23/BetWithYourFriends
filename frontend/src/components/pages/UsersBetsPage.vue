@@ -37,6 +37,11 @@ export default {
     AppMain,
     AppFooter,
     AppSortableTable
+  },
+  beforeCreate () {
+    if (this.$localStorage.get('authenticated') === 'false') {
+      this.$router.push('/login')
+    }
   }
 }
 </script>

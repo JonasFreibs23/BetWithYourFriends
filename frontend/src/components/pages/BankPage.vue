@@ -34,6 +34,11 @@ export default {
     AppMobileNav,
     AppMain,
     AppFooter
+  },
+  beforeCreate () {
+    if (this.$localStorage.get('authenticated') === 'false') {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
