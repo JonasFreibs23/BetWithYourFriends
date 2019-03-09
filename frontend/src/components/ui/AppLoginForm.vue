@@ -79,7 +79,7 @@ export default {
       LoginApi.login(this.form.userName, this.form.password).then(result => {
         if (result.data === 1) {
           this.loginSucces = true
-          this.$localStorage.set('authenticated', true)
+          this.$localStorage.set('authenticated', 'true')
           setTimeout(function () {
             this.$router.push('/home')
           }.bind(this), 2000)
