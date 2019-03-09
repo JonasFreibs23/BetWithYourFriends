@@ -1,6 +1,6 @@
 <?php
 
-class UsersBets
+class UsersBets implements \JsonSerializable
 {
   // Attributes
   private $userId;
@@ -38,6 +38,11 @@ class UsersBets
   public function setBetOpt($value)
   {
     $this->betOpt = $value;
+  }
+
+  public function jsonSerialize()
+  {
+      return get_object_vars($this);
   }
 
 }
