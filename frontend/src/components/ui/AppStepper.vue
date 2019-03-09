@@ -51,6 +51,8 @@
         </md-step>
         <span class="form-error" v-if="!isFormCorrect">Au moins un champ est invalide</span>
       </md-steppers>
+      <md-snackbar :md-active.sync="creationSucced">La nouvel utilisateur {{ form.username }} a été créé !</md-snackbar>
+      <md-snackbar :md-active.sync="creationFailed">La création du nouvel utilisateur a échoué !</md-snackbar>
     </form>
   </div>
 </template>
@@ -72,6 +74,8 @@ export default {
     third: false,
     secondStepError: null,
     isFormCorrect: true,
+    creationSucced: null,
+    creationFailed: null,
     form: {
       username: null,
       email: null,
@@ -124,11 +128,15 @@ export default {
       }
     },
     saveUser () {
-      // TODO : Snack bar or redirect
       LoginApi.createAccount(this.form.email, this.form.username, this.form.password)
         .then(result => {
-          if (result.status === 200) {
-          // TODO ok snackbar and redirect
+          if (result.data === 1) {
+            this.creationSucced = true
+            setTimeout(function () {
+              this.$router.push('/login')
+            }.bind(this), 2000)
+          } else {
+            this.creationFailed = true
           }
         })
     }
