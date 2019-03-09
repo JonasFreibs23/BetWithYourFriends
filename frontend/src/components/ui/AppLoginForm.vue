@@ -29,6 +29,8 @@
           <md-button type="submit" class="md-primary">Se connecter</md-button>
         </md-card-actions>
       </md-card>
+      <md-snackbar :md-active.sync="loginSucces">La connection est réussi !</md-snackbar>
+      <md-snackbar :md-active.sync="loginFailed">La connection a échoué !</md-snackbar>
     </form>
   </div>
 </template>
@@ -45,13 +47,15 @@ export default {
     form: {
       userName: null,
       password: null
-    }
+    },
+    loginSucces: null,
+    loginFailed: null
   }),
   validations: {
     form: {
       userName: {
         required,
-        minLength: minLength(3),
+        minLength: minLength(2),
         alphaNum
       },
       password: {
@@ -72,13 +76,15 @@ export default {
       }
     },
     logUserIn () {
-      console.log('Call API')
       LoginApi.login(this.form.userName, this.form.password).then(result => {
-        // TODO : redirect if succes or snackbar if failed
-        console.log(result)
-        if (result.status === 200) {
-          // TODO redirect or snackbar
-          // SHOW disconnect button
+        if (result.data === 1) {
+          this.loginSucces = true
+          setTimeout(function () {
+            this.$router.push('/home')
+          }.bind(this), 2000)
+          // TODO SHOW disconnect button
+        } else {
+          this.loginFailed = true
         }
       })
     },

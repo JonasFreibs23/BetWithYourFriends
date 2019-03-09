@@ -1,5 +1,7 @@
 <?php
 
+require "app/models/Users.php";
+
 class LoginController{
 
   public function login(){
@@ -30,15 +32,30 @@ class LoginController{
       $dbh = App::get('dbh');
 
       // TODO : vérifier bonne valeur passé à la db, check parameters
-      $req = "SELECT id FROM users WHERE name = ? and password = ?";
-      $statement = $dbh->prepare($req);
-      $statement->bindParam(1, $_POST["username"]);
-      $statement->bindParam(2, $hashedPassword);
-      $statement->execute();
+      try{
+        $req = "SELECT * FROM users WHERE name = ?";
+        $statement = $dbh->prepare($req);
+        $statement->bindParam(1, $_POST["username"]);
+        $statement->execute();
 
-      // TODO CHECK user and password ok
+        $users = $statement->fetchAll(PDO::FETCH_CLASS, "Users");
+        $loginSuccess = false;
 
-      exit(0);
+        foreach ($users as $user) {
+          if(password_verify($_POST["password"], $users[0]->getPassword())){
+            $loginSuccess = true;
+            break;
+          }
+        }
+        // print_r($user[0]->getPassword());
+        echo $loginSuccess;
+        exit(0);
+      }
+      catch(PDOException $err)
+      {
+        echo $err;
+        exit(1);
+      }
     }
   }
 
@@ -72,18 +89,21 @@ class LoginController{
       $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
       $dbh = App::get('dbh');
-
-      // TODO : vérifier bonne valeur passé à la db, check parameters
-      $req = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-      $statement = $dbh->prepare($req);
-      $statement->bindParam(1, $_POST["username"]);
-      $statement->bindParam(2, $_POST["email"]);
-      $statement->bindParam(3, $hashedPassword);
-      $statement->execute();
-
-      // TODO CHECK EXECUTION OK
-
-      exit(0);
+      try
+      {
+        // TODO : vérifier bonne valeur passé à la db, check parameters
+        $req = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+        $statement = $dbh->prepare($req);
+        $statement->bindParam(1, $_POST["username"]);
+        $statement->bindParam(2, $_POST["email"]);
+        $statement->bindParam(3, $hashedPassword);
+        $statement->execute();
+      }
+      catch(PDOException $error)
+      {
+        echo $err;
+        exit(1);
+      }
     }
   }
 
