@@ -29,7 +29,7 @@
           <md-button type="submit" class="md-primary">Se connecter</md-button>
         </md-card-actions>
       </md-card>
-      <md-snackbar :md-active.sync="loginSucces">La connection est réussi !</md-snackbar>
+      <md-snackbar :md-active.sync="loginSucces" :md-duration="duration">La connection est réussi !</md-snackbar>
       <md-snackbar :md-active.sync="loginFailed">La connection a échoué !</md-snackbar>
     </form>
   </div>
@@ -49,7 +49,8 @@ export default {
       password: null
     },
     loginSucces: null,
-    loginFailed: null
+    loginFailed: null,
+    duration: 1000
   }),
   validations: {
     form: {

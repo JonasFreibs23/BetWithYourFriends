@@ -1,6 +1,6 @@
 <template>
   <div class="md-layout md-alignment-center">
-    <md-table class="md-layout-item md-size-100 md-small-size-100 md-xsmall-size-100" v-model="bets" md-sort="name" md-sort-order="asc" md-card>
+    <md-table class="md-layout-item md-size-100 md-small-size-100 md-xsmall-size-100" v-model="bets" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
       <md-table-toolbar>
         <h1 class="md-title">Mes inscriptions aux paris</h1>
       </md-table-toolbar>
@@ -12,6 +12,9 @@
         <md-table-cell v-else-if="item.betOpt === '1'" md-label="Bet" md-sort-by="winOpt2">{{ item.winOpt2 }}</md-table-cell>
         <md-table-cell md-label="Price" md-numeric md-sort-by="participationPrice">{{ item.participationPrice }}</md-table-cell>
         <md-table-cell md-label="winningOption" md-sort-by="winningOption">{{ item.winningOption ? item.winningOption : "Pas encore défini" }}</md-table-cell>
+        <md-table-cell md-label="Edit bet">
+          <md-button class="md-primary" v-on:click="navigate(`${item.id}`,` ${item.title}`,`${item.winOpt1}`,`${item.winOpt2}`)">Edit</md-button>
+        </md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -42,6 +45,11 @@ export default {
         }
       })
     })
+  },
+  methods: {
+    navigate (betId, betName, option1, option2) {
+      this.$router.push({name: 'EditBet', params: {id: betId, name: betName, option1: option1, option2: option2}})
+    }
   }
 }
 </script>

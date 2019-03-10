@@ -6,6 +6,7 @@ import CreateBetPage from '@/components/pages/CreateBetPage'
 import BankPage from '@/components/pages/BankPage'
 import AboutPage from '@/components/pages/AboutPage'
 import LoginPage from '@/components/pages/LoginPage'
+import EditBetPage from '@/components/pages/EditBetPage'
 
 Vue.use(Router)
 
@@ -44,6 +45,12 @@ export default new Router({
     path: '/login',
     name: 'LoginPage',
     component: LoginPage
+  },
+  {
+    path: '/edit-bet/:id',
+    name: 'EditBet',
+    component: EditBetPage,
+    props: true
   }
   ]
 })
