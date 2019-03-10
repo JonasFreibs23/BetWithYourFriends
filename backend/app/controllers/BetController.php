@@ -2,10 +2,10 @@
 
 require "app/models/Bets.php";
 require "app/models/UsersBets.php";
-
+require "app/controllers/BaseController.php";
 // TODO : check user is logged to api call
 
-class BetController
+class BetController extends BaseController
 {
   public function getBets()
   {

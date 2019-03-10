@@ -11,6 +11,9 @@ export default {
       password: password
     })
   },
+  logout () {
+    return axios.post('/logout')
+  },
   createAccount (email, username, password) {
     return axios.post('/createAccount', {
       email: email,

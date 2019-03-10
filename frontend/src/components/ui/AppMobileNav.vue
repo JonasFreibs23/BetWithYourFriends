@@ -20,18 +20,38 @@
         <span class="md-list-item-text" v-on:click="navigate('/login')">Login</span>
       </md-list-item>
       <md-list-item>
-        <span class="md-list-item-text">Logout</span>
+        <span class="md-list-item-text" v-on:click="logout">Logout</span>
       </md-list-item>
     </md-list>
+    <md-snackbar :md-active.sync="logoutSucces">Utilisateur déconnecté !</md-snackbar>
+    <md-snackbar :md-active.sync="logoutFailed">Echec lors de la déconnection !</md-snackbar>
   </div>
 </template>
 
 <script>
+import LoginApi from '@/services/api/Login'
+
 export default {
   name: 'AppMobileNav',
+  data: () => ({
+    logoutSucces: null,
+    logoutFailed: null
+  }),
   methods: {
     navigate (link) {
       this.$router.push(link)
+    },
+    logout () {
+      console.log('Shoud log out')
+      LoginApi.logout().then(result => {
+        if (result.data === 1) {
+          this.logoutSucces = true
+          this.$localStorage.set('authenticated', 'false')
+          this.$router.push('/login')
+        } else {
+          this.logoutFailed = true
+        }
+      })
     }
   }
 }

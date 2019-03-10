@@ -47,15 +47,18 @@ export default {
   methods: {
     applyBet: function (betOpt) {
       // TODO : remove hard coded user id
-      // TODO : give feedback to user
-      BetsApi.applyToBet(this.betId, betOpt, 1).then(response => {
-        this.betSaved = true
-      }).catch(error => {
-        this.betNotSaved = true
-        console.log(error)
-      })
-      this.betSaved = false
-      this.betNotSaved = false
+      if (this.$localStorage.get('authenticated') === 'true') {
+        BetsApi.applyToBet(this.betId, betOpt, 1).then(response => {
+          this.betSaved = true
+        }).catch(error => {
+          this.betNotSaved = true
+          console.log(error)
+        })
+        this.betSaved = false
+        this.betNotSaved = false
+      } else {
+        this.$router.push('/login')
+      }
     }
   }
 }

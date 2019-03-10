@@ -41,26 +41,35 @@ class LoginController{
         $users = $statement->fetchAll(PDO::FETCH_CLASS, "Users");
         $loginSuccess = false;
 
-        foreach ($users as $user) {
-          if(password_verify($_POST["password"], $users[0]->getPassword())){
+        if(count($users) > 0)
+        {
+          $user = $users[0];
+          if(password_verify($_POST["password"], $user->getPassword()))
+          {
             $loginSuccess = true;
-            break;
+            $_SESSION['userId'] = $user->getId();
           }
         }
-        // print_r($user[0]->getPassword());
+
         echo $loginSuccess;
-        exit(0);
       }
       catch(PDOException $err)
       {
-        echo $err;
-        exit(1);
+        echo $err->getMessage();
       }
     }
   }
 
   public function logout(){
-    // TODO
+    $isLoggedOut = false;
+    if($_SESSION['userId'] !== -1)
+		{
+      session_destroy();
+      $isLoggedOut = true;
+    }
+    // TODO : remove when not in dev
+    header("Access-Control-Allow-Origin: *");
+    echo $isLoggedOut;
   }
 
   public function createAccount(){
@@ -97,12 +106,17 @@ class LoginController{
         $statement->bindParam(1, $_POST["username"]);
         $statement->bindParam(2, $_POST["email"]);
         $statement->bindParam(3, $hashedPassword);
-        $statement->execute();
+
+        $creationSucces = false;
+
+        if($statement->execute())
+          $creationSucces = true;
+
+        echo $creationSucces;
       }
-      catch(PDOException $error)
+      catch(PDOException $err)
       {
-        echo $err;
-        exit(1);
+        echo $err->getMessage();
       }
     }
   }
