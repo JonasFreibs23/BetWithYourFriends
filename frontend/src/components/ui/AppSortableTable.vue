@@ -1,9 +1,19 @@
 <template>
   <div class="md-layout md-alignment-center">
-    <md-table class="md-layout-item md-size-100 md-small-size-100 md-xsmall-size-100" v-model="bets" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+    <md-table class="md-layout-item md-size-100 md-small-size-100 md-xsmall-size-100" v-model="searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
       <md-table-toolbar>
-        <h1 class="md-title">Mes inscriptions aux paris</h1>
+        <div class="md-toolbar-section-start">
+          <h1 class="md-title">Mes inscriptions aux paris</h1>
+        </div>
+        <md-field style="max-width: 300px;" md-clearable class="md-toolbar-section-end">
+          <md-input placeholder="Recherch par événement" v-model="search" @input="searchOnTable" />
+        </md-field>
       </md-table-toolbar>
+
+      <md-table-empty-state
+        md-label="Pas d'événement trouvé"
+        :md-description="`Pas d'événement trouvé pour la recherche '${search}' query.`">
+      </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Event" md-sort-by="title">{{ item.title }}</md-table-cell>
@@ -23,10 +33,24 @@
 <script>
 import BetsApi from '@/services/api/Bets'
 
+const toLower = text => {
+  return text.toString().toLowerCase()
+}
+
+const searchByName = (items, term) => {
+  if (term) {
+    return items.filter(item => toLower(item.title).includes(toLower(term)))
+  }
+
+  return items
+}
+
 export default {
   name: 'AppSortableTable',
   data () {
     return {
+      search: null,
+      searched: [],
       bets: {}
     }
   },
@@ -43,12 +67,16 @@ export default {
         for (let i = 0; i < this.bets.length; i++) {
           this.bets[i]['betOpt'] = betOpt[i]
         }
+        this.searched = this.bets
       })
     })
   },
   methods: {
     navigate (betId, betName, option1, option2) {
       this.$router.push({name: 'EditBet', params: {id: betId, name: betName, option1: option1, option2: option2}})
+    },
+    searchOnTable () {
+      this.searched = searchByName(this.bets, this.search)
     }
   }
 }

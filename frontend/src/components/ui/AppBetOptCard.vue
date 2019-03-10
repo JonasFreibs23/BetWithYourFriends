@@ -41,6 +41,7 @@
 </template>
 
 <script>
+// TODO : vote call API
 export default {
   name: 'AppBetOptCard'
 }

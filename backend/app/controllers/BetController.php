@@ -56,19 +56,27 @@ class BetController extends BaseController
 
       $dbh = App::get('dbh');
 
-      // TODO : vérifier bonne valeur passé à la db, check parameters
-      $req = "INSERT INTO bets (title, description, eventDate, winOpt1, winOpt2, participationPrice) VALUES (?, ?, ?, ?, ?, ?)";
-      $statement = $dbh->prepare($req);
-      // TODO : pass by reference does not work
-      $statement->bindParam(1, $_POST["title"]);
-      $statement->bindParam(2, $_POST["description"]);
-      $statement->bindParam(3, $_POST["eventDate"]);
-      $statement->bindParam(4, $_POST["option1"]);
-      $statement->bindParam(5, $_POST["option2"]);
-      $statement->bindParam(6, $_POST["participationPrice"]);
-      $statement->execute();
+      try{
+        // TODO : vérifier bonne valeur passé à la db, check parameters
+        $req = "INSERT INTO bets (title, description, eventDate, winOpt1, winOpt2, participationPrice) VALUES (?, ?, ?, ?, ?, ?)";
+        $statement = $dbh->prepare($req);
+        // TODO : pass by reference does not work
+        $statement->bindParam(1, $_POST["title"]);
+        $statement->bindParam(2, $_POST["description"]);
+        $statement->bindParam(3, $_POST["eventDate"]);
+        $statement->bindParam(4, $_POST["option1"]);
+        $statement->bindParam(5, $_POST["option2"]);
+        $statement->bindParam(6, $_POST["participationPrice"]);
 
-      exit(0);
+        $isBetCreated = false;
+        if ($statement->execute())
+          $isBetCreated = true;
+
+        echo $isBetCreated;
+      }
+      catch(PDOException $err){
+        echo $err->getMessage();
+      }
     }
   }
 
@@ -97,16 +105,26 @@ class BetController extends BaseController
 
       $dbh = App::get('dbh');
 
-      // TODO : vérifier bonne valeur passé à la db, check parameters
-      $req = "INSERT INTO users_bets VALUES (?, ?, ?)";
-      $statement = $dbh->prepare($req);
-      // TODO : pass by reference does not work
-      $statement->bindParam(1, $_POST["userId"]);
-      $statement->bindParam(2, $_POST["betId"]);
-      $statement->bindParam(3, $_POST["betOpt"]);
-      $statement->execute();
+      try{
+        // TODO : vérifier bonne valeur passé à la db, check parameters
+        $req = "INSERT INTO users_bets VALUES (?, ?, ?)";
+        $statement = $dbh->prepare($req);
+        // TODO : pass by reference does not work
+        $statement->bindParam(1, $_POST["userId"]);
+        $statement->bindParam(2, $_POST["betId"]);
+        $statement->bindParam(3, $_POST["betOpt"]);
 
-      exit(0);
+        $isApplicationSuccessful = false;
+
+        if($statement->execute())
+          $isApplicationSuccessful = true;
+
+        echo $isApplicationSuccessful;
+      }
+      catch(PDOException $err){
+        echo $err->getMessage();
+      }
+
     }
   }
 
@@ -114,25 +132,35 @@ class BetController extends BaseController
     // TODO : change hard coded userid
     $userId = 1;
     $dbh = App::get('dbh');
-    $req = "SELECT * FROM users_bets WHERE userId = ?";
-		$statement = $dbh->prepare($req);
-    $statement->bindParam(1, $userId);
-		$statement->execute();
-		$usersBets = $statement->fetchAll(PDO::FETCH_CLASS, "UsersBets");
-    header("Access-Control-Allow-Origin: *");
-    echo json_encode($usersBets);
+    try{
+      $req = "SELECT * FROM users_bets WHERE userId = ?";
+  		$statement = $dbh->prepare($req);
+      $statement->bindParam(1, $userId);
+  		$statement->execute();
+  		$usersBets = $statement->fetchAll(PDO::FETCH_CLASS, "UsersBets");
+      header("Access-Control-Allow-Origin: *");
+      echo json_encode($usersBets);
+    }
+    catch(PDOException $err){
+      echo $err->getMessage();
+    }
   }
 
   public function getBetById(){
     $betId = $_GET["betId"];
     $dbh = App::get('dbh');
-    $req = "SELECT * FROM bets WHERE id = ?";
-		$statement = $dbh->prepare($req);
-    $statement->bindParam(1, $betId);
-		$statement->execute();
-		$bets = $statement->fetchAll(PDO::FETCH_CLASS, "Bets");
-    header("Access-Control-Allow-Origin: *");
-    echo json_encode($bets);
+    try{
+      $req = "SELECT * FROM bets WHERE id = ?";
+  		$statement = $dbh->prepare($req);
+      $statement->bindParam(1, $betId);
+  		$statement->execute();
+  		$bets = $statement->fetchAll(PDO::FETCH_CLASS, "Bets");
+      header("Access-Control-Allow-Origin: *");
+      echo json_encode($bets);
+    }
+    catch(PDOException $err){
+      $err->getMessage();
+    }
   }
 
 }

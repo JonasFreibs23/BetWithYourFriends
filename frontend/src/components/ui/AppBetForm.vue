@@ -139,10 +139,13 @@ export default {
       this.sending = true
       BetsApi.createBet(this.form).then(response => {
         this.lastBet = `${this.form.title}`
-        this.betSaved = true
-        this.betNotSaved = false
-        this.sending = false
-        this.clearForm()
+        if (response.data === 1) {
+          this.betSaved = true
+          this.sending = false
+          this.clearForm()
+        } else {
+          this.betNotSaved = true
+        }
       }).catch(error => {
         this.error = error
         this.betSaved = false

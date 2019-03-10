@@ -49,7 +49,11 @@ export default {
       // TODO : remove hard coded user id
       if (this.$localStorage.get('authenticated') === 'true') {
         BetsApi.applyToBet(this.betId, betOpt, 1).then(response => {
-          this.betSaved = true
+          if (response.data === 1) {
+            this.betSaved = true
+          } else {
+            this.betNotSaved = true
+          }
         }).catch(error => {
           this.betNotSaved = true
           console.log(error)
