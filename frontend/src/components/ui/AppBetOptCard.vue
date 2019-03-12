@@ -32,18 +32,37 @@
         <md-divider></md-divider>
 
         <md-card-actions class="md-layout md-alignment-center-center">
-          <md-button class="md-raised md-primary">Définir l'option 1 comme gagnante</md-button>
-          <md-button class="md-raised md-primary">Définir l'option 2 comme gagnante</md-button>
+          <md-button class="md-raised md-primary" v-on:click="editBet(`${betOpt1}`)">Définir l'option 1 comme gagnante</md-button>
+          <md-button class="md-raised md-primary" v-on:click="editBet(`${betOpt2}`)">Définir l'option 2 comme gagnante</md-button>
         </md-card-actions>
       </md-ripple>
     </md-card>
+    <md-snackbar :md-active.sync="isBetEdited">Le pari a été modifié !</md-snackbar>
+    <md-snackbar :md-active.sync="isBetNotEdited">Le pari n'a pas pu être modifié !</md-snackbar>
   </div>
 </template>
 
 <script>
-// TODO : vote call API
+import BetsApi from '@/services/api/Bets'
+
 export default {
-  name: 'AppBetOptCard'
+  name: 'AppBetOptCard',
+  props: ['betId', 'betOpt1', 'betOpt2'],
+  data: () => ({
+    isBetEdited: null,
+    isBetNotEdited: null
+  }),
+  methods: {
+    editBet (betWinningOpt) {
+      BetsApi.editBet(this.betId, betWinningOpt).then(result => {
+        if (result.data === 1) {
+          this.isBetEdited = true
+        } else {
+          this.isBetNotEdited = true
+        }
+      })
+    }
+  }
 }
 </script>
 

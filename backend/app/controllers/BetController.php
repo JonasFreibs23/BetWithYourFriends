@@ -159,7 +159,32 @@ class BetController extends BaseController
       echo json_encode($bets);
     }
     catch(PDOException $err){
-      $err->getMessage();
+      header("Access-Control-Allow-Origin: *");
+      echo $err->getMessage();
+    }
+  }
+
+  public function editBet(){
+    // TODO : check valid data
+    $betId = $_GET["betId"];
+    $betOpt = $_GET["betWinningOpt"];
+    $dbh = App::get('dbh');
+    try{
+      $req = "UPDATE bets SET winningOption = :winningOption WHERE id = :id";
+  		$statement = $dbh->prepare($req);
+      $statement->bindParam(':winningOption', $betOpt);
+      $statement->bindParam(':id', $betId);
+
+      $isBetEdited = false;
+  		if($statement->execute())
+        $isBetEdited = true;
+
+      header("Access-Control-Allow-Origin: *");
+      echo $isBetEdited;
+    }
+    catch(PDOException $err){
+      header("Access-Control-Allow-Origin: *");
+      echo $err->getMessage();
     }
   }
 

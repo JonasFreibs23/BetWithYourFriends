@@ -19,7 +19,11 @@ export default {
     let bets = {}
     let promises = []
     for (let id of ids) {
-      promises.push(axios.get('/getBetById?betId=' + id))
+      promises.push(axios.get('/getBetById', {
+        params: {
+          betId: id
+        }
+      }))
     }
     return axios.all(promises).then(results => {
       results.forEach(result => {
@@ -44,6 +48,14 @@ export default {
       betId: betId,
       betOpt: betOpt,
       userId: userId
+    })
+  },
+  editBet (betId, betWinningOpt) {
+    return axios.get('/editBet', {
+      params: {
+        betId: betId,
+        betWinningOpt: betWinningOpt
+      }
     })
   }
 }

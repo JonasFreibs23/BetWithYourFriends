@@ -12,7 +12,7 @@
     Editer mon pari
     </app-header>
     <app-main>
-      <app-bet-opt-card>
+      <app-bet-opt-card :betId="id" :betOpt1="option1" :betOpt2="option2">
         <template slot="title">{{ name }}</template>
         <template slot="opt1">{{ option1 }}</template>
         <template slot="opt2">{{ option2 }}</template>
