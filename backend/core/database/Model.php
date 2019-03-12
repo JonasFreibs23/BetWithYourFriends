@@ -13,12 +13,12 @@ abstract class Model
     return $statement->fetchAll(PDO::FETCH_CLASS, $intoClass);
   }
 
-  public static function fetchById($table, $id, $intoClass){
+  public static function fetchById($table, $colId, $id, $intoClass){
     $dbh = App::get('dbh');
 
-    $req = "SELECT * FROM {$table} WHERE id = ?";
+    $req = "SELECT * FROM {$table} WHERE {$colId} = ?";
     $statement = $dbh->prepare($req);
-    $statement->bind(1, $id);
+    $statement->bindParam(1, $id);
     $statement->execute();
 
     return $statement->fetchAll(PDO::FETCH_CLASS, $intoClass);

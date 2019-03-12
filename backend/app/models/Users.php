@@ -1,6 +1,6 @@
 <?php
 
-class Users extends Model
+class Users extends Model implements JsonSerializable
 {
 
   private $id;
@@ -51,8 +51,15 @@ class Users extends Model
     $this->password = $val;
   }
 
+  public function jsonSerialize()
+  {
+    return get_object_vars($this);
+  }
+
   public function getByName()
   {
+    $dbh = App::get('dbh');
+    
     $req = "SELECT * FROM users WHERE name = ?";
     $statement = $dbh->prepare($req);
     $statement->bindParam(1, $this->name);

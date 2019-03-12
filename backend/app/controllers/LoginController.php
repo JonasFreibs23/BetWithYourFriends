@@ -1,7 +1,5 @@
 <?php
 
-require "app/models/Users.php";
-
 class LoginController{
 
   public function login(){
@@ -29,8 +27,6 @@ class LoginController{
 
       $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-      $dbh = App::get('dbh');
-
       // TODO : vérifier bonne valeur passé à la db, check parameters
       try{
         $user = new Users();
@@ -49,12 +45,10 @@ class LoginController{
           }
         }
 
-        header("Access-Control-Allow-Origin: *");
         echo $loginSuccess;
       }
       catch(PDOException $err)
       {
-        header("Access-Control-Allow-Origin: *");
         echo $err->getMessage();
       }
     }
@@ -104,12 +98,10 @@ class LoginController{
         $user->setEmail($_POST["email"]);
         $user->setPassword($hashedPassword);
 
-        header("Access-Control-Allow-Origin: *");
         echo $user->save();
       }
       catch(PDOException $err)
       {
-        header("Access-Control-Allow-Origin: *");
         echo $err->getMessage();
       }
     }

@@ -1,6 +1,6 @@
 <?php
 
-class Bets extends Model
+class Bets extends Model implements JsonSerializable
 {
   // Attributes
   private $id;
@@ -99,12 +99,17 @@ class Bets extends Model
     $this->winningOption = $value;
   }
 
+  public function jsonSerialize()
+  {
+    return get_object_vars($this);
+  }
+
   public static function fetchBets(){
     return parent::fetchAll("bets", "Bets");
   }
 
   public static function fetchBetById($id){
-    return parent::fetchById("bets", $id, "Bets");
+    return parent::fetchById("bets", "id", $id, "Bets");
   }
 
   public function save()
@@ -114,11 +119,11 @@ class Bets extends Model
     $req = "INSERT INTO bets (title, description, eventDate, winOpt1, winOpt2, participationPrice) VALUES (?, ?, ?, ?, ?, ?)";
     $statement = $dbh->prepare($req);
     // TODO : pass by reference does not work
-    $statement->bindParam(1, $this->id);
+    $statement->bindParam(1, $this->title);
     $statement->bindParam(2, $this->description);
     $statement->bindParam(3, $this->eventDate);
-    $statement->bindParam(4, $this->option1);
-    $statement->bindParam(5, $this->option2);
+    $statement->bindParam(4, $this->winOpt1);
+    $statement->bindParam(5, $this->winOpt2);
     $statement->bindParam(6, $this->participationPrice);
 
     return $statement->execute();

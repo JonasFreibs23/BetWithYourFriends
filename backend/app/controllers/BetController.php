@@ -101,7 +101,6 @@ class BetController extends BaseController
   public function getUsersBets(){
     // TODO : change hard coded userid
     $userId = 1;
-    $dbh = App::get('dbh');
     try{
   		$usersBets = UsersBets::fetchUsersBetsById($userId);
 

@@ -1,6 +1,6 @@
 <?php
 
-class UsersBets extends Model
+class UsersBets extends Model implements JsonSerializable
 {
   // Attributes
   private $userId;
@@ -39,8 +39,13 @@ class UsersBets extends Model
     $this->betOpt = $value;
   }
 
+  public function jsonSerialize()
+  {
+    return get_object_vars($this);
+  }
+
   public static function fetchUsersBetsById($id){
-    parent::fetchById("users_bets", $id, "UsersBets");
+    return parent::fetchById("users_bets", "userId", $id, "UsersBets");
   }
 
   public function save(){
