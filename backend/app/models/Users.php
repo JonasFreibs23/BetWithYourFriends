@@ -1,6 +1,6 @@
 <?php
 
-class Users implements \JsonSerializable
+class Users extends Model
 {
 
   private $id;
@@ -51,9 +51,26 @@ class Users implements \JsonSerializable
     $this->password = $val;
   }
 
-  public function jsonSerialize()
+  public function getByName()
   {
-      return get_object_vars($this);
+    $req = "SELECT * FROM users WHERE name = ?";
+    $statement = $dbh->prepare($req);
+    $statement->bindParam(1, $this->name);
+    $statement->execute();
+
+    return $statement->fetchAll(PDO::FETCH_CLASS, "Users");
+  }
+
+  public function save(){
+    $dbh = App::get('dbh');
+
+    $req = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    $statement = $dbh->prepare($req);
+    $statement->bindParam(1, $this->name);
+    $statement->bindParam(2, $this->email);
+    $statement->bindParam(3, $this->password);
+
+    return $statement->execute();
   }
 
 }

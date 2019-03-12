@@ -1,6 +1,6 @@
 <?php
 
-class UsersBets implements \JsonSerializable
+class UsersBets extends Model
 {
   // Attributes
   private $userId;
@@ -8,7 +8,6 @@ class UsersBets implements \JsonSerializable
   private $betId;
 
   private $betOpt;
-
 
   public function getUserId()
   {
@@ -40,9 +39,20 @@ class UsersBets implements \JsonSerializable
     $this->betOpt = $value;
   }
 
-  public function jsonSerialize()
-  {
-      return get_object_vars($this);
+  public static function fetchUsersBetsById($id){
+    parent::fetchById("users_bets", $id, "UsersBets");
+  }
+
+  public function save(){
+    $dbh = App::get('dbh');
+
+    $req = "INSERT INTO users_bets VALUES (?, ?, ?)";
+    $statement = $dbh->prepare($req);
+    $statement->bindParam(1, $this->userId);
+    $statement->bindParam(2, $this->betId);
+    $statement->bindParam(3, $this->betOpt);
+
+    return $statement->execute();
   }
 
 }

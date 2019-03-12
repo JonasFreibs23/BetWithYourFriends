@@ -10,7 +10,7 @@ return array(
     'db_name' => 'bet',
     'db_port' => 3306,
     'connection_description' => [],
-    'options' => [PDO::ATTR_ERRMODE =>  PDO::ERRMODE_EXCEPTION],
+    'options' => [PDO::ATTR_ERRMODE =>  PDO::ERRMODE_EXCEPTION, 'charset' => 'UTF8'],
     'relative_path' => __DIR__ . '../',
     'install_prefix' => 'bet/awa-g3-bet/backend',
 );

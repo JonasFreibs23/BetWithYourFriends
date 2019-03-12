@@ -1,6 +1,6 @@
 <?php
 
-class Bets implements \JsonSerializable
+class Bets extends Model
 {
   // Attributes
   private $id;
@@ -16,6 +16,8 @@ class Bets implements \JsonSerializable
   private $winOpt2;
 
   private $participationPrice;
+
+  private $winningOption;
 
   public function getId()
   {
@@ -87,9 +89,51 @@ class Bets implements \JsonSerializable
     $this->participationPrice = $value;
   }
 
-  public function jsonSerialize()
+  public function getWinningOption()
   {
-      return get_object_vars($this);
+    return $this->winningOption;
+  }
+
+  public function setWinningOption($value)
+  {
+    $this->winningOption = $value;
+  }
+
+  public static function fetchBets(){
+    return parent::fetchAll("bets", "Bets");
+  }
+
+  public static function fetchBetById($id){
+    return parent::fetchById("bets", $id, "Bets");
+  }
+
+  public function save()
+  {
+    $dbh = App::get('dbh');
+    // TODO : vérifier bonne valeur passé à la db, check parameters
+    $req = "INSERT INTO bets (title, description, eventDate, winOpt1, winOpt2, participationPrice) VALUES (?, ?, ?, ?, ?, ?)";
+    $statement = $dbh->prepare($req);
+    // TODO : pass by reference does not work
+    $statement->bindParam(1, $this->id);
+    $statement->bindParam(2, $this->description);
+    $statement->bindParam(3, $this->eventDate);
+    $statement->bindParam(4, $this->option1);
+    $statement->bindParam(5, $this->option2);
+    $statement->bindParam(6, $this->participationPrice);
+
+    return $statement->execute();
+  }
+
+  public function edit()
+  {
+    $dbh = App::get('dbh');
+
+    $req = "UPDATE bets SET winningOption = ? WHERE id = ?";
+    $statement = $dbh->prepare($req);
+    $statement->bindParam(1, $this->winningOption);
+    $statement->bindParam(2, $this->id);
+
+    return $statement->execute();
   }
 
 }

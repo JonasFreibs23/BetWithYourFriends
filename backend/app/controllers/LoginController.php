@@ -33,12 +33,10 @@ class LoginController{
 
       // TODO : vérifier bonne valeur passé à la db, check parameters
       try{
-        $req = "SELECT * FROM users WHERE name = ?";
-        $statement = $dbh->prepare($req);
-        $statement->bindParam(1, $_POST["username"]);
-        $statement->execute();
+        $user = new Users();
+        $user->setName($_POST["username"]);
 
-        $users = $statement->fetchAll(PDO::FETCH_CLASS, "Users");
+        $users = $user->getByName();
         $loginSuccess = false;
 
         if(count($users) > 0)
@@ -51,10 +49,12 @@ class LoginController{
           }
         }
 
+        header("Access-Control-Allow-Origin: *");
         echo $loginSuccess;
       }
       catch(PDOException $err)
       {
+        header("Access-Control-Allow-Origin: *");
         echo $err->getMessage();
       }
     }
@@ -95,27 +95,21 @@ class LoginController{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
+      // TODO : vérifier bonne valeur passé à la db, check parameters
       $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
-
-      $dbh = App::get('dbh');
       try
       {
-        // TODO : vérifier bonne valeur passé à la db, check parameters
-        $req = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-        $statement = $dbh->prepare($req);
-        $statement->bindParam(1, $_POST["username"]);
-        $statement->bindParam(2, $_POST["email"]);
-        $statement->bindParam(3, $hashedPassword);
+        $user = new Users();
+        $user->setName($_POST["username"]);
+        $user->setEmail($_POST["email"]);
+        $user->setPassword($hashedPassword);
 
-        $creationSucces = false;
-
-        if($statement->execute())
-          $creationSucces = true;
-
-        echo $creationSucces;
+        header("Access-Control-Allow-Origin: *");
+        echo $user->save();
       }
       catch(PDOException $err)
       {
+        header("Access-Control-Allow-Origin: *");
         echo $err->getMessage();
       }
     }

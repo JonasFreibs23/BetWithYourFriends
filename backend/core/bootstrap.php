@@ -6,6 +6,10 @@ require 'core/Router.php';
 require 'core/Request.php';
 require 'core/App.php';
 require 'core/database/Connection.php';
+require "core/database/Model.php";
+require "app/models/Bets.php";
+require "app/models/Users.php";
+require "app/models/UsersBets.php";
 require 'helpers/Helper.php';
 
 App::load_config("config.php");
