@@ -57,6 +57,9 @@ export default {
       BetsApi.editBet(this.betId, betWinningOpt).then(result => {
         if (result.data === 1) {
           this.isBetEdited = true
+          setTimeout(function () {
+            this.$router.push('/my-bets')
+          }.bind(this), 2000)
         } else {
           this.isBetNotEdited = true
         }
