@@ -12,6 +12,8 @@
         Mon compte en banque
         </app-header>
         <app-main>
+          <h2>Mon solde</h2>
+          <p>0</p>
         </app-main>
         <app-footer/>
     </div>
@@ -38,6 +40,8 @@ export default {
   beforeCreate () {
     if (this.$localStorage.get('authenticated') === 'false') {
       this.$router.push('/login')
+    } else {
+      console.log('Should request')
     }
   }
 }

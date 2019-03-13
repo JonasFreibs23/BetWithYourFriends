@@ -9,5 +9,6 @@ $router->define([
   'editBet' => 'BetController@editBet',
   'login' => 'LoginController@login',
   'logout' => 'LoginController@logout',
-  'createAccount' => 'LoginController@createAccount'
+  'createAccount' => 'LoginController@createAccount',
+  'getUserBalance' => 'BankController@getUserBalance'
 ]);

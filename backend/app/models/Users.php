@@ -59,7 +59,7 @@ class Users extends Model implements JsonSerializable
   public function getByName()
   {
     $dbh = App::get('dbh');
-    
+
     $req = "SELECT * FROM users WHERE name = ?";
     $statement = $dbh->prepare($req);
     $statement->bindParam(1, $this->name);
@@ -71,7 +71,7 @@ class Users extends Model implements JsonSerializable
   public function save(){
     $dbh = App::get('dbh');
 
-    $req = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    $req = "INSERT INTO users (id, name, email, password) VALUES (DEFAULT, ?, ?, ?)";
     $statement = $dbh->prepare($req);
     $statement->bindParam(1, $this->name);
     $statement->bindParam(2, $this->email);
