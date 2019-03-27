@@ -7,6 +7,7 @@ import BankPage from '@/components/pages/BankPage'
 import AboutPage from '@/components/pages/AboutPage'
 import LoginPage from '@/components/pages/LoginPage'
 import EditBetPage from '@/components/pages/EditBetPage'
+import NotFoundPage from '@/components/pages/NotFoundPage'
 
 Vue.use(Router)
 
@@ -15,6 +16,11 @@ export default new Router({
     path: '/',
     name: 'Default',
     component: HomePage
+  },
+  {
+    path: '*',
+    name: 'NotFound',
+    component: NotFoundPage
   },
   {
     path: '/home',
