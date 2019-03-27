@@ -11,7 +11,15 @@
         <app-header>
         A propos
         </app-header>
-        <app-main/>
+        <app-main>
+        <h2>Description</h2>
+        <p>Bet with your friends a été créé pour que des étudiants puissent parier sur des événements sportifs sans vouloir forcément dépenser de l'argent.
+        Nous avons donc développé un site avec une monnaie virtuelle qui peut être échangé par des lots réélles comme des cafés ou des pâtisseries.
+        </p>
+        <p>Pour pouvoir jouer, il suffit de vous inscrire, de créér votre pari et de défier vos amis !</p>
+        <p>Ce site internet a été developpé par deux étudiants à la He-Arc en informatique lors d'un projet d'application web.</p>
+        <p></p>
+        </app-main>
         <app-footer/>
     </div>
 </template>
@@ -35,4 +43,5 @@ export default {
     AppFooter
   }
 }
+
 </script>

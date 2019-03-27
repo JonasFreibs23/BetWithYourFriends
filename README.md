@@ -40,8 +40,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ### Todo
 
-* [ ] Make responsive
+* [X] Make responsive
 * [ ] Pick colour palet
 * [ ] Write php test
 * [ ] Write js test
-* [ ] Move model out from controller
+* [X] Move model out from controller
+* [ ] Make redirection on 404
