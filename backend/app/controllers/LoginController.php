@@ -2,6 +2,14 @@
 
 class LoginController{
 
+  /**
+   * @ApiDescription(section="LoginController", description="Log the user in")
+   * @ApiMethod(type="post")
+   * @ApiRoute(name="/login")
+   * @ApiParams(name="username", type="string", description="The user name")
+   * @ApiParams(name="password", type="string", description="The user's password")
+   * @ApiReturn(type="boolean")
+   */
   public function login(){
     // TODO : remove when not in dev
     // Allow from any origin
@@ -57,6 +65,12 @@ class LoginController{
     }
   }
 
+  /**
+   * @ApiDescription(section="LoginController", description="Log the user out")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/logout")
+   * @ApiReturn(type="boolean")
+   */
   public function logout(){
     $isLoggedOut = false;
     if($_SESSION['userId'] !== -1)
@@ -69,6 +83,15 @@ class LoginController{
     echo $isLoggedOut;
   }
 
+  /**
+   * @ApiDescription(section="LoginController", description="Log the user in")
+   * @ApiMethod(type="post")
+   * @ApiRoute(name="/createAccount")
+   * @ApiParams(name="username", type="string", description="The user name")
+   * @ApiParams(name="email", type="string", description="The user's email")
+   * @ApiParams(name="password", type="string", description="The user's password")
+   * @ApiReturn(type="boolean")
+   */
   public function createAccount(){
     // TODO : remove when not in dev
     // Allow from any origin

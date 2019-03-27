@@ -57,6 +57,13 @@ class ComposerStaticInit6b5a96db23dd5266a077047ebf97f8f5
     );
 
     public static $prefixesPsr0 = array (
+        'S' => 
+        array (
+            'Sumtum' => 
+            array (
+                0 => __DIR__ . '/..' . '/sumtum/php-autodoc',
+            ),
+        ),
         'P' => 
         array (
             'Prophecy\\' => 

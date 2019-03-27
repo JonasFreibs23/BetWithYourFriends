@@ -18,8 +18,8 @@
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Evénement" md-sort-by="title">{{ item.title }}</md-table-cell>
         <md-table-cell md-label="Date de l'événement" md-numeric md-sort-by="eventDate">{{ item.eventDate }}</md-table-cell>
-        <md-table-cell v-if="item.betOpt === '0'" md-label="Option de pari" md-sort-by="winOpt1">{{ item.winOpt1 }}</md-table-cell>
-        <md-table-cell v-else-if="item.betOpt === '1'" md-label="Option de pari" md-sort-by="winOpt2">{{ item.winOpt2 }}</md-table-cell>
+        <md-table-cell v-if="item.betOpt === '0'" md-label="Mon choix de pari" md-sort-by="winOpt1">{{ item.winOpt1 }}</md-table-cell>
+        <md-table-cell v-else-if="item.betOpt === '1'" md-label="Mon choix de pari" md-sort-by="winOpt2">{{ item.winOpt2 }}</md-table-cell>
         <md-table-cell md-label="Prix de participation" md-numeric md-sort-by="participationPrice">{{ item.participationPrice }}</md-table-cell>
         <md-table-cell md-label="Option gagnante" md-sort-by="winningOption">{{ item.winningOption ? item.winningOption : "Pas encore défini" }}</md-table-cell>
         <md-table-cell md-label="Editer le pari">

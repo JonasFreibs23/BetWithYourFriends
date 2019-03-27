@@ -5,6 +5,13 @@ require "app/controllers/BaseController.php";
 
 class BetController extends BaseController
 {
+
+  /**
+   * @ApiDescription(section="BetController", description="Get existing bets")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/getBets")
+   * @ApiReturn(type="json", sample="Bets")
+   */
   public function getBets()
   {
     $bets = Bets::fetchBets();
@@ -15,6 +22,12 @@ class BetController extends BaseController
     echo json_encode($bets);
   }
 
+  /**
+   * @ApiDescription(section="BetController", description="Create a new bet")
+   * @ApiMethod(type="post")
+   * @ApiRoute(name="/createBet")
+   * @ApiReturn(type="boolean")
+   */
   public function createBet()
   {
     $bet = new Bets;
@@ -63,6 +76,12 @@ class BetController extends BaseController
     }
   }
 
+  /**
+   * @ApiDescription(section="BetController", description="Apply to a bet")
+   * @ApiMethod(type="post")
+   * @ApiRoute(name="/applyToBet")
+   * @ApiReturn(type="boolean")
+   */
   public function applyToBet(){
     // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -106,6 +125,12 @@ class BetController extends BaseController
     }
   }
 
+  /**
+   * @ApiDescription(section="BetController", description="Get the bets the user has applied to")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/getUsersBets")
+   * @ApiReturn(type="json", sample="UsersBets")
+   */
   public function getUsersBets(){
     // TODO : change hard coded userid
     $userId = 1;
@@ -122,6 +147,13 @@ class BetController extends BaseController
     }
   }
 
+  /**
+   * @ApiDescription(section="BetController", description="Get a bet by id")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/getBetById")
+   * @ApiParams(name="betId", type="int", description="The bet's id")
+   * @ApiReturn(type="json", sample="Bets")
+   */
   public function getBetById(){
     $betId = $_GET["betId"];
     $dbh = App::get('dbh');
@@ -138,6 +170,13 @@ class BetController extends BaseController
     }
   }
 
+  /**
+   * @ApiDescription(section="BetController", description="Set the winning option to a bet by id")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/editBet")
+   * @ApiParams(name="betId", type="int", description="The bet's id")
+   * @ApiReturn(type="boolean")
+   */
   public function editBet(){
     // TODO : check valid data
     if(isset($_GET["betId"]) && ctype_digit($_GET["betId"]) && isset($_GET["betWinningOpt"]))
