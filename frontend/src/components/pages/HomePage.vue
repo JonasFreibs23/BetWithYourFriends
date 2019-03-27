@@ -12,7 +12,10 @@
         Les paris
         </app-header>
         <app-main>
-            <h2>plus récents</h2>
+            <h2>Get started</h2>
+              <md-button class="md-raised md-primary" v-on:click="navigate('/create-bet')">Create a bet</md-button>
+              <md-button class="md-raised md-primary" v-on:click="navigate('/login')">Create a new account</md-button>
+            <h2>Recently created bets</h2>
             <div class="md-layout">
               <swiper :options="swiperOptions">
                 <swiper-slide v-for="bet in bets.slice().reverse()" :key="bet.id">
@@ -88,6 +91,11 @@ export default {
       }
     }
   },
+  methods: {
+    navigate (link) {
+      this.$router.push(link)
+    }
+  },
   created () {
     BetsApi.getBets()
       .then(bets => {
@@ -102,4 +110,9 @@ h2{
     text-align: left;
     margin-left: 20px;
 }
+.md-button{
+  width: 200px;
+  margin-left: 40px;
+  margin-right: 40px;
+  }
 </style>

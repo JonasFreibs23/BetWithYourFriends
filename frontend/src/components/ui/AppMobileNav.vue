@@ -42,7 +42,6 @@ export default {
       this.$router.push(link)
     },
     logout () {
-      console.log('Shoud log out')
       LoginApi.logout().then(result => {
         if (result.data === 1) {
           this.logoutSucces = true

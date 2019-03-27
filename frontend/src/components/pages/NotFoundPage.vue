@@ -16,6 +16,10 @@
           Oops, the requested page was not found... <br/>
           You can use the navigation bar to get back to the home page.
           </p>
+          <md-button class="md-raised" v-on:click="navigate('/')">Home</md-button>
+          <md-button class="md-raised" v-on:click="navigate('/create-bet')">Create a bet</md-button>
+          <md-button class="md-raised" v-on:click="navigate('/login')">Create a new account</md-button>
+          <md-button class="md-raised" v-on:click="navigate('/my-bets')">See my bets</md-button>
         </app-main>
         <app-footer/>
     </div>
@@ -38,6 +42,11 @@ export default {
     AppMobileNav,
     AppMain,
     AppFooter
+  },
+  methods: {
+    navigate (link) {
+      this.$router.push(link)
+    }
   }
 }
 </script>
