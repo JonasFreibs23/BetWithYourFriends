@@ -53,10 +53,14 @@ class LoginController{
           }
         }
 
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $loginSuccess;
       }
       catch(PDOException $err)
       {
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $err->getMessage();
       }
     }
@@ -76,7 +80,8 @@ class LoginController{
       $isLoggedOut = true;
     }
     // TODO : remove when not in dev
-    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Credentials: true');
     echo $isLoggedOut;
   }
 
@@ -121,10 +126,14 @@ class LoginController{
         $user->setEmail($_POST["email"]);
         $user->setPassword($hashedPassword);
 
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $user->save();
       }
       catch(PDOException $err)
       {
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $err->getMessage();
       }
     }

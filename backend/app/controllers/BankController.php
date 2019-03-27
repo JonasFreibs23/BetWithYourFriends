@@ -13,14 +13,12 @@ class BankController
    */
   public function getUserBalance()
   {
-    // TODO ne pas mettre en dur
-    $userId = 1;
-
     // TODO : remove when not in dev
-    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Credentials: true');
     header('Content-type: application/json');
 
-    echo json_encode(Banks::fetchBankById($userId));
+    echo json_encode(Banks::fetchBankById($_SESSION['userId']));
   }
 
 }

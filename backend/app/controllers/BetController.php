@@ -17,7 +17,8 @@ class BetController extends BaseController
     $bets = Bets::fetchBets();
 
     // TODO : remove when not in dev
-    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Credentials: true');
     header('Content-type: application/json');
     echo json_encode($bets);
   }
@@ -61,11 +62,13 @@ class BetController extends BaseController
       $bet->setParticipationPrice($_POST["participationPrice"]);
 
       try{
-        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $bet->save();
       }
       catch(PDOException $err){
-        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $err->getMessage();
       }
     }
@@ -102,18 +105,19 @@ class BetController extends BaseController
 
       try{
         $usersBets = new UsersBets();
-        $usersBets->setUserId($_POST["userId"]);
+        $usersBets->setUserId($_SESSION["userId"]);
         $usersBets->setBetId($_POST["betId"]);
         $usersBets->setBetOpt($_POST["betOpt"]);
 
-        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $usersBets->save();
       }
       catch(PDOException $err){
-        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
         echo $err->getMessage();
       }
-
     }
   }
 
@@ -125,16 +129,17 @@ class BetController extends BaseController
    */
   public function getUsersBets(){
     // TODO : change hard coded userid
-    $userId = 1;
     try{
-  		$usersBets = UsersBets::fetchUsersBetsById($userId);
+  		$usersBets = UsersBets::fetchUsersBetsById($_SESSION['userId']);
 
-      header("Access-Control-Allow-Origin: *");
+      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+      header('Access-Control-Allow-Credentials: true');
       header('Content-type: application/json');
       echo json_encode($usersBets);
     }
     catch(PDOException $err){
-      header("Access-Control-Allow-Origin: *");
+      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+      header('Access-Control-Allow-Credentials: true');
       echo $err->getMessage();
     }
   }
@@ -152,12 +157,14 @@ class BetController extends BaseController
     try{
   		$bets = Bets::fetchBetById($betId);
 
-      header("Access-Control-Allow-Origin: *");
+      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+      header('Access-Control-Allow-Credentials: true');
       header('Content-type: application/json');
       echo json_encode($bets);
     }
     catch(PDOException $err){
-      header("Access-Control-Allow-Origin: *");
+      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+      header('Access-Control-Allow-Credentials: true');
       echo $err->getMessage();
     }
   }
@@ -179,11 +186,13 @@ class BetController extends BaseController
       $bet->setId($betId);
       $bet->setWinningOption($betWinningOpt);
 
-      header("Access-Control-Allow-Origin: *");
+      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+      header('Access-Control-Allow-Credentials: true');
       echo $bet->edit();
     }
     catch(PDOException $err){
-      header("Access-Control-Allow-Origin: *");
+      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+      header('Access-Control-Allow-Credentials: true');
       echo $err->getMessage();
     }
   }
