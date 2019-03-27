@@ -25,31 +25,34 @@ class LoginController{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
-      $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
-
-      // TODO : vérifier bonne valeur passé à la db, check parameters
-      try{
-        $user = new Users();
-        $user->setName($_POST["username"]);
-
-        $users = $user->getByName();
-        $loginSuccess = false;
-
-        if(count($users) > 0)
-        {
-          $user = $users[0];
-          if(password_verify($_POST["password"], $user->getPassword()))
-          {
-            $loginSuccess = true;
-            $_SESSION['userId'] = $user->getId();
-          }
-        }
-
-        echo $loginSuccess;
-      }
-      catch(PDOException $err)
+      if(isset($_POST["password"]) && isset($_POST["username"]))
       {
-        echo $err->getMessage();
+        $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+        // TODO : vérifier bonne valeur passé à la db, check parameters
+        try{
+          $user = new Users();
+          $user->setName($_POST["username"]);
+
+          $users = $user->getByName();
+          $loginSuccess = false;
+
+          if(count($users) > 0)
+          {
+            $user = $users[0];
+            if(password_verify($_POST["password"], $user->getPassword()))
+            {
+              $loginSuccess = true;
+              $_SESSION['userId'] = $user->getId();
+            }
+          }
+
+          echo $loginSuccess;
+        }
+        catch(PDOException $err)
+        {
+          echo $err->getMessage();
+        }
       }
     }
   }
@@ -89,20 +92,23 @@ class LoginController{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
-      // TODO : vérifier bonne valeur passé à la db, check parameters
-      $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
-      try
+      if(isset($_POST["password"]) && isset($_POST["username"]) && isset($_POST["email"]))
       {
-        $user = new Users();
-        $user->setName($_POST["username"]);
-        $user->setEmail($_POST["email"]);
-        $user->setPassword($hashedPassword);
+        // TODO : vérifier bonne valeur passé à la db, check parameters
+        $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
+        try
+        {
+          $user = new Users();
+          $user->setName($_POST["username"]);
+          $user->setEmail($_POST["email"]);
+          $user->setPassword($hashedPassword);
 
-        echo $user->save();
-      }
-      catch(PDOException $err)
-      {
-        echo $err->getMessage();
+          echo $user->save();
+        }
+        catch(PDOException $err)
+        {
+          echo $err->getMessage();
+        }
       }
     }
   }
