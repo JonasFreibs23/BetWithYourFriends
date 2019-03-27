@@ -51,26 +51,31 @@ class BetController extends BaseController
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $_POST = json_decode(file_get_contents("php://input"), true);
+        $_POST = json_decode(file_get_contents("php://input"), true);
 
-      $bet = new Bets();
-      $bet->setTitle($_POST["title"]);
-      $bet->setDescription($_POST["description"]);
-      $bet->setWinOpt1($_POST["option1"]);
-      $bet->setWinOpt2($_POST["option2"]);
-      $bet->setEventDate($_POST["eventDate"]);
-      $bet->setParticipationPrice($_POST["participationPrice"]);
+         if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["option1"]) && isset($_POST["option2"])
+            && isset($_POST["eventDate"]) && isset($_POST["participationPrice"]) && ctype_digit($_POST["participationPrice"]))
+         {
+          $bet = new Bets();
 
-      try{
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $bet->save();
-      }
-      catch(PDOException $err){
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $err->getMessage();
-      }
+          $bet->setTitle($_POST["title"]);
+          $bet->setDescription($_POST["description"]);
+          $bet->setWinOpt1($_POST["option1"]);
+          $bet->setWinOpt2($_POST["option2"]);
+          $bet->setEventDate($_POST["eventDate"]);
+          $bet->setParticipationPrice($_POST["participationPrice"]);
+
+          try{
+            header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+            header('Access-Control-Allow-Credentials: true');
+            echo $bet->save();
+          }
+          catch(PDOException $err){
+            header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+            header('Access-Control-Allow-Credentials: true');
+            echo $err->getMessage();
+          }
+       }
     }
   }
 
@@ -81,7 +86,6 @@ class BetController extends BaseController
    * @ApiReturn(type="boolean")
    */
   public function applyToBet(){
-
     // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -103,20 +107,23 @@ class BetController extends BaseController
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
-      try{
-        $usersBets = new UsersBets();
-        $usersBets->setUserId($_SESSION["userId"]);
-        $usersBets->setBetId($_POST["betId"]);
-        $usersBets->setBetOpt($_POST["betOpt"]);
+       if(isset($_POST["betId"]) && ctype_digit($_POST["betId"]) && isset($_POST["betOpt"]))
+       {
+        try{
+          $usersBets = new UsersBets();
+          $usersBets->setUserId($_SESSION["userId"]);
+          $usersBets->setBetId($_POST["betId"]);
+          $usersBets->setBetOpt($_POST["betOpt"]);
 
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $usersBets->save();
-      }
-      catch(PDOException $err){
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $err->getMessage();
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $usersBets->save();
+        }
+        catch(PDOException $err){
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $err->getMessage();
+        }
       }
     }
   }
@@ -178,22 +185,25 @@ class BetController extends BaseController
    */
   public function editBet(){
     // TODO : check valid data
-    $betId = $_GET["betId"];
-    $betWinningOpt = $_GET["betWinningOpt"];
-    $dbh = App::get('dbh');
-    try{
-      $bet = new Bets();
-      $bet->setId($betId);
-      $bet->setWinningOption($betWinningOpt);
+    if(isset($_GET["betId"]) && ctype_digit($_GET["betId"]) && isset($_GET["betWinningOpt"]))
+    {
+      $betId = $_GET["betId"];
+      $betWinningOpt = $_GET["betWinningOpt"];
+      $dbh = App::get('dbh');
+      try{
+        $bet = new Bets();
+        $bet->setId($betId);
+        $bet->setWinningOption($betWinningOpt);
 
-      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-      header('Access-Control-Allow-Credentials: true');
-      echo $bet->edit();
-    }
-    catch(PDOException $err){
-      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-      header('Access-Control-Allow-Credentials: true');
-      echo $err->getMessage();
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
+        echo $bet->edit();
+      }
+      catch(PDOException $err){
+        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+        header('Access-Control-Allow-Credentials: true');
+        echo $err->getMessage();
+      }
     }
   }
 

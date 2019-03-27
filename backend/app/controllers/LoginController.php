@@ -14,54 +14,56 @@ class LoginController{
     // TODO : remove when not in dev
     // Allow from any origin
     if (isset($_SERVER['HTTP_ORIGIN'])) {
-        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+      header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+      header('Access-Control-Allow-Credentials: true');
+      header('Access-Control-Max-Age: 86400');    // cache for 1 day
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+      if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+      if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 
-        exit(0);
+      exit(0);
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
-      $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
+      if(isset($_POST["password"]) && isset($_POST["username"])) {
+        $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-      // TODO : vérifier bonne valeur passé à la db, check parameters
-      try{
-        $user = new Users();
-        $user->setName($_POST["username"]);
+        // TODO : vérifier bonne valeur passé à la db, check parameters
+        try{
+          $user = new Users();
+          $user->setName($_POST["username"]);
 
-        $users = $user->getByName();
-        $loginSuccess = false;
+          $users = $user->getByName();
+          $loginSuccess = false;
 
-        if(count($users) > 0)
-        {
-          $user = $users[0];
-          if(password_verify($_POST["password"], $user->getPassword()))
+          if(count($users) > 0)
           {
-            $loginSuccess = true;
-            $_SESSION['userId'] = $user->getId();
+            $user = $users[0];
+            if(password_verify($_POST["password"], $user->getPassword()))
+            {
+              $loginSuccess = true;
+              $_SESSION['userId'] = $user->getId();
+            }
           }
-        }
 
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $loginSuccess;
-      }
-      catch(PDOException $err)
-      {
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $err->getMessage();
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $loginSuccess;
+        }
+        catch(PDOException $err)
+        {
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $err->getMessage();
+        }
       }
     }
   }
@@ -98,18 +100,18 @@ class LoginController{
     // TODO : remove when not in dev
     // Allow from any origin
     if (isset($_SERVER['HTTP_ORIGIN'])) {
-        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+      header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+      header('Access-Control-Allow-Credentials: true');
+      header('Access-Control-Max-Age: 86400');    // cache for 1 day
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+      if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+      if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 
         exit(0);
     }
@@ -117,26 +119,29 @@ class LoginController{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
-      // TODO : vérifier bonne valeur passé à la db, check parameters
-      $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
-      try
+      if(isset($_POST["password"]) && isset($_POST["username"]) && isset($_POST["email"]))
       {
-        $user = new Users();
-        $user->setName($_POST["username"]);
-        $user->setEmail($_POST["email"]);
-        $user->setPassword($hashedPassword);
+        // TODO : vérifier bonne valeur passé à la db, check parameters
+        $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
+        try
+        {
+          $user = new Users();
+          $user->setName($_POST["username"]);
+          $user->setEmail($_POST["email"]);
+          $user->setPassword($hashedPassword);
 
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $user->save();
-      }
-      catch(PDOException $err)
-      {
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $err->getMessage();
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $user->save();
+        }
+        catch(PDOException $err)
+        {
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $err->getMessage();
+        }
       }
     }
-  }
+}
 
 }

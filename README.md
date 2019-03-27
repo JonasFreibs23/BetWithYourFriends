@@ -45,4 +45,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 * [ ] Write php test
 * [ ] Write js test
 * [X] Move model out from controller
-* [ ] Make redirection on 404
+* [X] Make redirection on 404
