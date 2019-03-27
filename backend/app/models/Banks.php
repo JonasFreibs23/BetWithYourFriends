@@ -38,7 +38,8 @@ class Banks extends Model implements JsonSerializable
 
   public function jsonSerialize()
   {
-    return get_object_vars($this);
+    $retBalance["balance"] = $this->balance;
+    return $retBalance;
   }
 
 }

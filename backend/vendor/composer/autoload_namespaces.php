@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Sumtum' => array($vendorDir . '/sumtum/php-autodoc'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
 );
