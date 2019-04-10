@@ -6,7 +6,7 @@
           <h1 class="md-title">Mes inscriptions aux paris</h1>
         </div>
         <md-field style="max-width: 300px;" md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Recherch par événement" v-model="search" @input="searchOnTable" />
+          <md-input placeholder="Recherche par événement" v-model="search" @input="searchOnTable" />
         </md-field>
       </md-table-toolbar>
 

@@ -2,6 +2,7 @@
 
 $router->define([
   'getBets' => 'BetController@getBets',
+  'getTrendingBets' => 'BetController@getTrendingBets',
   'createBet' => 'BetController@createBet',
   'applyToBet' => 'BetController@applyToBet',
   'getUsersBets' => 'BetController@getUsersBets',

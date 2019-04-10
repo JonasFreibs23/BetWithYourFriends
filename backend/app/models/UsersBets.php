@@ -48,6 +48,16 @@ class UsersBets extends Model implements JsonSerializable
     return parent::fetchById("users_bets", "userId", $id, "UsersBets");
   }
 
+  public static function fetchTrendingBetsId(){
+    $dbh = App::get('dbh');
+
+    $req = "SELECT betId FROM users_bets GROUP BY betId ORDER BY COUNT(*) DESC";
+    $statement = $dbh->prepare($req);
+    $statement->execute();
+
+    return $statement->fetchAll();
+  }
+
   public function save(){
     $dbh = App::get('dbh');
 

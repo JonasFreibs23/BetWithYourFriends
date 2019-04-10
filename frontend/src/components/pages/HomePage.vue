@@ -31,6 +31,22 @@
                 <div class="swiper-button-next" slot="button-next"></div>
               </swiper>
             </div>
+            <h2>Trending bets</h2>
+            <div class="md-layout">
+              <swiper :options="swiperOptions">
+                <swiper-slide v-for="trendingBet in trendingBets.slice().reverse()" :key="trendingBet.id">
+                  <app-card :betId="trendingBet.id" class="md-layout-item">
+                      <template slot="title">{{trendingBet.title}}</template>
+                      <template slot="date">{{trendingBet.eventDate}}</template>
+                      <template slot="description">{{trendingBet.description}}</template>
+                      <template slot="opt1">{{trendingBet.winOpt1}}</template>
+                      <template slot="opt2">{{trendingBet.winOpt2}}</template>
+                  </app-card>
+                </swiper-slide>
+                <div class="swiper-button-prev" slot="button-prev"></div>
+                <div class="swiper-button-next" slot="button-next"></div>
+              </swiper>
+            </div>
         </app-main>
         <app-footer/>
     </div>
@@ -64,6 +80,7 @@ export default {
   data () {
     return {
       bets: [],
+      trendingBets: [],
       swiperOptions: {
         slidesPerView: 4,
         spaceBetween: 0,
@@ -100,6 +117,10 @@ export default {
     BetsApi.getBets()
       .then(bets => {
         this.bets = bets
+      })
+    BetsApi.getTrendingBets()
+      .then(trendingBets => {
+        this.trendingBets = trendingBets
       })
   }
 }

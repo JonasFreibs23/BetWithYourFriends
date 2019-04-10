@@ -17,9 +17,42 @@ class BetController extends BaseController
     $bets = Bets::fetchBets();
 
     // TODO : remove when not in dev
-    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-    header('Access-Control-Allow-Credentials: true');
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');
+    }
+
     header('Content-type: application/json');
+
+    echo json_encode($bets);
+  }
+
+  /**
+   * @ApiDescription(section="BetController", description="Get the most trendy bets")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/getTrendingBets")
+   * @ApiReturn(type="json", sample="Bets")
+   */
+  public function getTrendingBets()
+  {
+    $trendingBetsIds = UsersBets::fetchTrendingBetsId();
+
+    $bets = [];
+    foreach($trendingBetsIds as $trendingBetId){
+      $bet = Bets::fetchBetById($trendingBetId[0]);
+      array_push($bets, $bet[0]);
+    }
+
+    // TODO : remove when not in dev
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');
+    }
+
+    header('Content-type: application/json');
+
     echo json_encode($bets);
   }
 
