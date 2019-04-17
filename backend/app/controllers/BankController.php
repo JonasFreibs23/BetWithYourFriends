@@ -1,6 +1,8 @@
 <?php
 
-class BankController
+require "app/controllers/BaseController.php";
+
+class BankController extends BaseController
 {
 
   /**
@@ -13,6 +15,7 @@ class BankController
    */
   public function getUserBalance()
   {
+    parent::checkIsLogged();
     // TODO : remove when not in dev
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');

@@ -19,6 +19,8 @@ class Bets extends Model implements JsonSerializable
 
   private $winningOption;
 
+  private $altered;
+
   public function getId()
   {
     return $this->id;
@@ -99,6 +101,16 @@ class Bets extends Model implements JsonSerializable
     $this->winningOption = $value;
   }
 
+  public function getAltered()
+  {
+    return $this->winningOption;
+  }
+
+  public function setAltered($value)
+  {
+    $this->altered = $value;
+  }
+
   public function jsonSerialize()
   {
     return get_object_vars($this);
@@ -133,7 +145,7 @@ class Bets extends Model implements JsonSerializable
   {
     $dbh = App::get('dbh');
 
-    $req = "UPDATE bets SET winningOption = ? WHERE id = ?";
+    $req = "UPDATE bets SET winningOption = ?, altered = TRUE WHERE id = ?";
     $statement = $dbh->prepare($req);
     $statement->bindParam(1, $this->winningOption);
     $statement->bindParam(2, $this->id);

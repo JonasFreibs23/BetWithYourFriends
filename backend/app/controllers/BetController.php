@@ -1,7 +1,6 @@
 <?php
 
 require "app/controllers/BaseController.php";
-// TODO : check user is logged to api call
 
 class BetController extends BaseController
 {
@@ -64,6 +63,7 @@ class BetController extends BaseController
    */
   public function createBet()
   {
+    parent::checkIsLogged();
     $bet = new Bets;
     // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -119,6 +119,8 @@ class BetController extends BaseController
    * @ApiReturn(type="boolean")
    */
   public function applyToBet(){
+    parent::checkIsLogged();
+
     // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -168,6 +170,8 @@ class BetController extends BaseController
    * @ApiReturn(type="json", sample="UsersBets")
    */
   public function getUsersBets(){
+    parent::checkIsLogged();
+
     // TODO : change hard coded userid
     try{
   		$usersBets = UsersBets::fetchUsersBetsById($_SESSION['userId']);
@@ -217,25 +221,37 @@ class BetController extends BaseController
    * @ApiReturn(type="boolean")
    */
   public function editBet(){
-    // TODO : check valid data
+    parent::checkIsLogged();
+
     if(isset($_GET["betId"]) && ctype_digit($_GET["betId"]) && isset($_GET["betWinningOpt"]))
     {
       $betId = $_GET["betId"];
       $betWinningOpt = $_GET["betWinningOpt"];
-      $dbh = App::get('dbh');
-      try{
-        $bet = new Bets();
-        $bet->setId($betId);
-        $bet->setWinningOption($betWinningOpt);
+      $bets = Bets::fetchBetById($betId);
+      $betCreatorId = $bets[0]->getId();
+      $betHasBeenAltered = $bets[0]->getAltered();
 
-        header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-        header('Access-Control-Allow-Credentials: true');
-        echo $bet->edit();
+      if($betId === $betCreatorId && !$betHasBeenAltered){
+        $dbh = App::get('dbh');
+        try{
+          $bet = new Bets();
+          $bet->setId($betId);
+          $bet->setWinningOption($betWinningOpt);
+
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $bet->edit();
+        }
+        catch(PDOException $err){
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $err->getMessage();
+        }
       }
-      catch(PDOException $err){
+      else{
         header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
         header('Access-Control-Allow-Credentials: true');
-        echo $err->getMessage();
+        echo "false";
       }
     }
   }
