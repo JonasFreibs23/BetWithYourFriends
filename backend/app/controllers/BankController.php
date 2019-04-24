@@ -1,6 +1,6 @@
 <?php
 
-require "app/controllers/BaseController.php";
+require_once "app/controllers/BaseController.php";
 
 class BankController extends BaseController
 {

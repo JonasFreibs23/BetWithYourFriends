@@ -1,6 +1,6 @@
 <?php
 
-require "app/controllers/BaseController.php";
+require_once "app/controllers/BaseController.php";
 
 class BetController extends BaseController
 {
@@ -83,20 +83,27 @@ class BetController extends BaseController
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         parent::checkIsLogged();
-        
+
         $_POST = json_decode(file_get_contents("php://input"), true);
 
          if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["option1"]) && isset($_POST["option2"])
-            && isset($_POST["eventDate"]) && isset($_POST["participationPrice"]) && ctype_digit($_POST["participationPrice"]))
+            && isset($_POST["eventDate"]) && isset($_POST["participationPrice"]))
          {
           $bet = new Bets();
 
-          $bet->setTitle($_POST["title"]);
-          $bet->setDescription($_POST["description"]);
-          $bet->setWinOpt1($_POST["option1"]);
-          $bet->setWinOpt2($_POST["option2"]);
-          $bet->setEventDate($_POST["eventDate"]);
-          $bet->setParticipationPrice($_POST["participationPrice"]);
+          try{
+            $bet->setTitle($_POST["title"]);
+            $bet->setDescription($_POST["description"]);
+            $bet->setWinOpt1($_POST["option1"]);
+            $bet->setWinOpt2($_POST["option2"]);
+            $bet->setEventDate($_POST["eventDate"]);
+            $bet->setParticipationPrice($_POST["participationPrice"]);
+          }
+          catch(Exception $err){
+            header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+            header('Access-Control-Allow-Credentials: true');
+            echo $err->getMessage();
+          }
 
           try{
             header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
@@ -119,8 +126,6 @@ class BetController extends BaseController
    * @ApiReturn(type="boolean")
    */
   public function applyToBet(){
-    parent::checkIsLogged();
-
     // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -140,6 +145,8 @@ class BetController extends BaseController
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      parent::checkIsLogged();
+
       $_POST = json_decode(file_get_contents("php://input"), true);
 
        if(isset($_POST["betId"]) && ctype_digit($_POST["betId"]) && isset($_POST["betOpt"]))
