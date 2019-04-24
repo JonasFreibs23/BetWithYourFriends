@@ -1,0 +1,27 @@
+.DS_Store
+node_modules/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/test/unit/coverage/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+
+### Composer ###
+composer.phar
+/vendor/
+/backend/vendor/
+
+# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# composer.lock
+
+# End of https://www.gitignore.io/api/composer
