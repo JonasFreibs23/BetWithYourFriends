@@ -63,8 +63,6 @@ class BetController extends BaseController
    */
   public function createBet()
   {
-    parent::checkIsLogged();
-    $bet = new Bets;
     // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -84,6 +82,8 @@ class BetController extends BaseController
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        parent::checkIsLogged();
+        
         $_POST = json_decode(file_get_contents("php://input"), true);
 
          if(isset($_POST["title"]) && isset($_POST["description"]) && isset($_POST["option1"]) && isset($_POST["option2"])

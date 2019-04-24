@@ -11,7 +11,6 @@ require "app/models/Bets.php";
 require "app/models/Users.php";
 require "app/models/UsersBets.php";
 require "app/models/Banks.php";
-require 'helpers/Helper.php';
 
 App::load_config("config.php");
 
