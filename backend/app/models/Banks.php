@@ -42,23 +42,24 @@ class Banks extends Model implements JsonSerializable
     return $retBalance;
   }
 
-  public static function edit($userId,$betId,$betOpt,$price)
+  public static function edit($userId,$betId,$betOpt,$price,$w)
   {
-    // var_dump("user");
-    // var_dump($userId);
-    // var_dump("bet");
-    // var_dump($betId);
-    // var_dump("opt");
-    // var_dump($betOpt);
-    //
-
-    //TODO : verif si ils ont bien parié ou non
     $dbh = App::get('dbh');
+    if($w==$betOpt)
+    {
+        $req = "UPDATE bank_accounts SET balance = (balance + :p) WHERE userId = :id";
 
-    $req = "UPDATE bank_accounts SET balance = balance + ? WHERE userId = ?";
-    $statement = $dbh->prepare($req);
-    $statement->bindParam(1, $price);
-    $statement->bindParam(2, $userId);
+        $statement = $dbh->prepare($req);
+        $statement->bindParam(':p', $price);
+        $statement->bindParam(':id', $userId);
+    }
+    else {
+      $req = "UPDATE bank_accounts SET balance = (balance - :p) WHERE userId = :id";
+
+      $statement = $dbh->prepare($req);
+      $statement->bindParam(':p', $price);
+      $statement->bindParam(':id', $userId);
+    }
 
     return $statement->execute();
   }

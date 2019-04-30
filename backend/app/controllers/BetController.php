@@ -245,7 +245,7 @@ class BetController extends BaseController
           header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
           header('Access-Control-Allow-Credentials: true');
           echo $bet->edit();
-          BankController::editBalance($betId);
+          BankController::editBalance($betId,$betWinningOpt);
         }
         catch(PDOException $err){
           header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);

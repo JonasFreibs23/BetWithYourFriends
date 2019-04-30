@@ -26,35 +26,43 @@ class BankController extends BaseController
     echo json_encode(Banks::fetchBankById($_SESSION['userId']));
   }
 
-  public static function editBalance($betId)
+  public static function editBalance($betId,$betWinningOpt)
   {
-    // var_dump("salut");
+    $dbhPrice=App::get('dbh');
+    $reqPrice="SELECT participationPrice FROM bets WHERE id=?";
+    $statementPrice = $dbhPrice->prepare($reqPrice);
+    $statementPrice->bindParam(1, $betId);
+    $statementPrice->execute();
+
+    $res=$statementPrice->fetchAll();
+
+    $price=$res[0]["participationPrice"];
+
     $dbh = App::get('dbh');
     $req = "SELECT * FROM users_bets WHERE users_bets.betId = ?";
     $statement = $dbh->prepare($req);
     $statement->bindParam(1, $betId);
     $statement->execute();
 
-
-    //TODO : recup prix
-    $dbhPrice=App::get('dbh');
-    $reqPrice="SELECT participationPrice FROM bets WHERE id=?";
-    $statementPrice = $dbhPrice->prepare($reqPrice);
-    $statementPrice->bindParam(1, $betId);
-    $statementPrice->execute();
-    $price=$statementPrice->fetchAll;
-  //  $price =100;
-
     while ($row = $statement->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-      Banks::edit($row[0],$row[1],$row[2],$price);
+
+      $dbhWinner=App::get('dbh');
+      $reqWinner = "SELECT winOpt1,winOpt2 FROM Bets WHERE id = ?";
+      $statementWin = $dbh->prepare($reqWinner);
+      $statementWin->bindParam(1, $row[1]);
+      $statementWin->execute();
+      $r=$statementWin->fetchAll();
+
+      if($r[0]["winOpt1"]==$betWinningOpt)
+      {
+        $w='0';
+      }
+      else {
+        $w='1';
+      }
+      Banks::edit($row[0],$row[1],$row[2],$price,$w);
     }
 
   }
-
-
-
-
-
-
 
 }
