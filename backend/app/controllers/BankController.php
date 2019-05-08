@@ -2,6 +2,7 @@
 
 require_once "app/controllers/BaseController.php";
 require_once "app/models/Banks.php";
+require_once "app/models/Trade.php";
 
 
 class BankController extends BaseController
@@ -24,6 +25,17 @@ class BankController extends BaseController
     header('Content-type: application/json');
 
     echo json_encode(Banks::fetchBankById($_SESSION['userId']));
+  }
+
+  public function getUserTrades()
+  {
+    parent::checkIsLogged();
+    // TODO : remove when not in dev
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Credentials: true');
+    header('Content-type: application/json');
+    //var_dump("just avant appel");
+    echo json_encode(Trade::fetchTradeById($_SESSION['userId']));
   }
 
   public static function editBalance($betId,$betWinningOpt)

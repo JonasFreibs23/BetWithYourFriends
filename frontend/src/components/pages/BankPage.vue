@@ -14,6 +14,9 @@
         <app-main>
           <h2>Mon solde</h2>
           <p>{{ balance }}</p>
+          <h2>Mes trades</h2>
+          <p>{{ trades }}</p>
+          <app-trade-form/>
         </app-main>
         <app-footer/>
     </div>
@@ -27,6 +30,8 @@ import AppMobileNav from '@/components/ui/AppMobileNav'
 import AppMain from '@/components/layout/AppMain'
 import AppFooter from '@/components/layout/AppFooter'
 import BankApi from '@/services/api/Bank'
+import TradeApi from '@/services/api/Trade'
+import AppTradeForm from '@/components/ui/AppTradeForm'
 
 export default {
   name: 'BankPage',
@@ -36,11 +41,13 @@ export default {
     AppNav,
     AppMobileNav,
     AppMain,
-    AppFooter
+    AppFooter,
+    AppTradeForm
   },
   data () {
     return {
-      balance: null
+      balance: null,
+      trades: null
     }
   },
   beforeCreate () {
@@ -50,6 +57,14 @@ export default {
       BankApi.getUserBalance().then(data => {
         if (data.length > 0) {
           this.balance = data[0].balance
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+
+      TradeApi.getUserTrades().then(data => {
+        if (data.length > 0) {
+          this.trades = data[0]
         }
       }).catch(error => {
         console.log(error)
