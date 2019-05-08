@@ -28,7 +28,7 @@
             </md-ripple>
         </md-card>
         <md-snackbar :md-active.sync="betSaved">Le pari a été enregistré !</md-snackbar>
-        <md-snackbar :md-active.sync="betNotSaved">Le pari n'a pas pu être enregistré !</md-snackbar>
+        <md-snackbar :md-active.sync="betNotSaved">Le pari n'a pas été enregistré ! {{ errorMsg }}</md-snackbar>
     </div>
 </template>
 
@@ -42,17 +42,18 @@ export default {
   ],
   data: () => ({
     betSaved: false,
-    betNotSaved: false
+    betNotSaved: false,
+    errorMsg: ''
   }),
   methods: {
     applyBet: function (betOpt) {
-      // TODO : remove hard coded user id
       if (this.$localStorage.get('authenticated') === 'true') {
         BetsApi.applyToBet(this.betId, betOpt).then(response => {
           if (response.data === 1) {
             this.betSaved = true
           } else {
             this.betNotSaved = true
+            this.errorMsg = response.data
           }
         }).catch(error => {
           this.betNotSaved = true

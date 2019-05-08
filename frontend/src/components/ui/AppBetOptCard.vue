@@ -38,7 +38,7 @@
       </md-ripple>
     </md-card>
     <md-snackbar :md-active.sync="isBetEdited">Le pari a été modifié !</md-snackbar>
-    <md-snackbar :md-active.sync="isBetNotEdited">Le pari n'a pas pu être modifié !</md-snackbar>
+    <md-snackbar :md-active.sync="isBetNotEdited">Le pari n'a pas été modifié : {{errorMsg}}</md-snackbar>
   </div>
 </template>
 
@@ -50,7 +50,8 @@ export default {
   props: ['betId', 'betOpt1', 'betOpt2'],
   data: () => ({
     isBetEdited: null,
-    isBetNotEdited: null
+    isBetNotEdited: null,
+    errorMsg: ''
   }),
   methods: {
     editBet (betWinningOpt) {
@@ -62,6 +63,7 @@ export default {
           }.bind(this), 2000)
         } else {
           this.isBetNotEdited = true
+          this.errorMsg = result.data
         }
       })
     }

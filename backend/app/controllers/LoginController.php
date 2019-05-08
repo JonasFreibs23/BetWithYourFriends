@@ -1,6 +1,7 @@
 <?php
 
-class LoginController{
+class LoginController
+{
 
   /**
    * @ApiDescription(section="LoginController", description="Log the user in")
@@ -10,15 +11,18 @@ class LoginController{
    * @ApiParams(name="password", type="string", description="The user's password")
    * @ApiReturn(type="boolean")
    */
-  public function login(){
+  public function login()
+  {
 
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
+    if (isset($_SERVER['HTTP_ORIGIN']))
+    {
       header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
       header('Access-Control-Allow-Credentials: true');
       header('Access-Control-Max-Age: 86400');    // cache for 1 day
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
+    {
 
       if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
@@ -29,10 +33,12 @@ class LoginController{
       exit(0);
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
-      if(isset($_POST["password"]) && isset($_POST["username"])) {
+      if(isset($_POST["password"]) && isset($_POST["username"]))
+      {
         $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
         // TODO : vérifier bonne valeur passé à la db, check parameters
@@ -97,13 +103,15 @@ class LoginController{
    */
   public function createAccount(){
 
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
+    if (isset($_SERVER['HTTP_ORIGIN']))
+    {
       header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
       header('Access-Control-Allow-Credentials: true');
       header('Access-Control-Max-Age: 86400');    // cache for 1 day
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
+    {
 
       if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
@@ -114,7 +122,8 @@ class LoginController{
         exit(0);
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
       $_POST = json_decode(file_get_contents("php://input"), true);
 
       if(isset($_POST["password"]) && isset($_POST["username"]) && isset($_POST["email"]))
@@ -134,12 +143,19 @@ class LoginController{
         }
         catch(PDOException $err)
         {
+          if($err->getCode() === "23000")
+          {
+            header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+            header('Access-Control-Allow-Credentials: true');
+            echo "Il existe déjà un utilisateur avec ce nom";
+            exit(0);
+          }
           header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
           header('Access-Control-Allow-Credentials: true');
           echo $err->getMessage();
         }
       }
     }
-}
+  }
 
 }

@@ -14,7 +14,6 @@
 
 <script>
 import LoginApi from '@/services/api/Login'
-// TODO : implement logout and hide when not logged in
 export default {
   name: 'AppNav',
   data: () => ({

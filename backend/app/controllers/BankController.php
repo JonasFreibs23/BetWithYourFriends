@@ -19,9 +19,18 @@ class BankController extends BaseController
     // TODO : remove when not in dev
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');
-    header('Content-type: application/json');
 
-    echo json_encode(Banks::fetchBankById($_SESSION['userId']));
+    try
+    {
+      header('Content-type: application/json');
+      echo json_encode(Banks::fetchBankById($_SESSION['userId']));
+    }
+    catch(PDOException $err){
+      echo "Data base error : " . $err->getMessage();
+    }
+    catch(Exception $err){
+      echo "General error : " . $err->getMessage();
+    }
   }
 
 }

@@ -51,8 +51,8 @@
         </md-step>
         <span class="form-error" v-if="!isFormCorrect">Au moins un champ est invalide</span>
       </md-steppers>
-      <md-snackbar :md-active.sync="creationSucced">La nouvel utilisateur {{ form.username }} a été créé !</md-snackbar>
-      <md-snackbar :md-active.sync="creationFailed">La création du nouvel utilisateur a échoué !</md-snackbar>
+      <md-snackbar :md-active.sync="creationSucced">Le nouvel utilisateur {{ form.username }} a été créé !</md-snackbar>
+      <md-snackbar :md-active.sync="creationFailed">La création du nouvel utilisateur a échoué ! {{ errorMsg }}</md-snackbar>
     </form>
   </div>
 </template>
@@ -61,8 +61,6 @@
 import { validationMixin } from 'vuelidate'
 import { required, minLength, alphaNum, email } from 'vuelidate/lib/validators'
 import LoginApi from '@/services/api/Login'
-
-// TODO add validation
 
 export default {
   name: 'AppStepper',
@@ -79,7 +77,8 @@ export default {
     form: {
       username: null,
       email: null,
-      password: null
+      password: null,
+      errorMessage: ''
     }
   }),
   validations: {
@@ -136,6 +135,7 @@ export default {
               this.$router.push('/login')
             }.bind(this), 2000)
           } else {
+            this.errorMsg = result.data
             this.creationFailed = true
           }
         })
