@@ -43,6 +43,8 @@ class LoginController
 
         // TODO : vérifier bonne valeur passé à la db, check parameters
         try{
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
           $user = new Users();
           $user->setName($_POST["username"]);
 
@@ -59,14 +61,10 @@ class LoginController
             }
           }
 
-          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-          header('Access-Control-Allow-Credentials: true');
           echo $loginSuccess;
         }
         catch(PDOException $err)
         {
-          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-          header('Access-Control-Allow-Credentials: true');
           echo $err->getMessage();
         }
       }
@@ -132,26 +130,23 @@ class LoginController
         $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
         try
         {
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+
           $user = new Users();
           $user->setName($_POST["username"]);
           $user->setEmail($_POST["email"]);
           $user->setPassword($hashedPassword);
 
-          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-          header('Access-Control-Allow-Credentials: true');
           echo $user->save();
         }
         catch(PDOException $err)
         {
           if($err->getCode() === "23000")
           {
-            header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-            header('Access-Control-Allow-Credentials: true');
             echo "Il existe déjà un utilisateur avec ce nom";
             exit(0);
           }
-          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-          header('Access-Control-Allow-Credentials: true');
           echo $err->getMessage();
         }
       }
