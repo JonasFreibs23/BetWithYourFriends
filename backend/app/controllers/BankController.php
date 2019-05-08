@@ -77,4 +77,53 @@ class BankController extends BaseController
 
   }
 
+  public static function createTrade(trade)
+  {
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+        exit(0);
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        parent::checkIsLogged();
+
+        $_POST = json_decode(file_get_contents("php://input"), true);
+        //TODO : verif post
+
+        $trade = new Trade();
+
+        $idAsk=Users::getIdFromName($_POST["userIdAsk"]);
+        $idAccept =Users::getIdFromName($_POST["userIdAccept"]);
+
+
+        $trade->setUserIdAsk($idAsk);
+        $trade->setUserIdAccept($idAccept);
+        $trade->setValue($_POST["value"]);
+
+        try{
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $trade->save();
+        }
+        catch(PDOException $err){
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $err->getMessage();
+        }
+
+    }
+  }
+
 }

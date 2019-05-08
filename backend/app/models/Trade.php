@@ -63,7 +63,6 @@ class Trade extends Model implements JsonSerializable
   {
     #return parent::fetchById("bank_accounts", "userId", $userId, "Banks");
     return parent::fetchById("trade", "userIdAsk", $userId, "Trade");
-
   }
 
   public function jsonSerialize()
@@ -73,7 +72,17 @@ class Trade extends Model implements JsonSerializable
 
   public function save()
   {
-    // TODO
+    $dbh = App::get('dbh');
+    // TODO : vérifier bonne valeur passé à la db, check parameters
+
+    $req = "INSERT INTO trade (userIdAsk, userIdAccept,  value) VALUES (?, ?, ?)";
+    $statement = $dbh->prepare($req);
+    // TODO : pass by reference does not work
+    $statement->bindParam(1, $this->userIdAsk);
+    $statement->bindParam(2, $this->userIdAccept);
+    $statement->bindParam(3, $this->value);
+
+    return $statement->execute();
   }
 
 }

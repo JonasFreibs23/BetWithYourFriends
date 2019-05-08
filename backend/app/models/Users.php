@@ -68,6 +68,18 @@ class Users extends Model implements JsonSerializable
     return $statement->fetchAll(PDO::FETCH_CLASS, "Users");
   }
 
+  public static function getIdFromName($name)
+  {
+    $dbh = App::get('dbh');
+
+    $req = "SELECT id FROM users WHERE name = ?";
+    $statement = $dbh->prepare($req);
+    $statement->bindParam(1, $name);
+    $statement->execute();
+
+    return $statement;
+  }
+
   public function save(){
     $dbh = App::get('dbh');
 

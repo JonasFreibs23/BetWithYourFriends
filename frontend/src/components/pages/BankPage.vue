@@ -14,9 +14,9 @@
         <app-main>
           <h2>Mon solde</h2>
           <p>{{ balance }}</p>
+          <app-trade-form/>
           <h2>Mes trades</h2>
           <p>{{ trades }}</p>
-          <app-trade-form/>
         </app-main>
         <app-footer/>
     </div>
