@@ -15,7 +15,6 @@ class BetController extends BaseController
   {
     $bets = Bets::fetchBets();
 
-    // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -43,7 +42,6 @@ class BetController extends BaseController
       array_push($bets, $bet[0]);
     }
 
-    // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -63,7 +61,7 @@ class BetController extends BaseController
    */
   public function createBet()
   {
-    // TODO : remove when not in dev
+
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -126,7 +124,7 @@ class BetController extends BaseController
    * @ApiReturn(type="boolean")
    */
   public function applyToBet(){
-    // TODO : remove when not in dev
+
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -179,7 +177,6 @@ class BetController extends BaseController
   public function getUsersBets(){
     parent::checkIsLogged();
 
-    // TODO : change hard coded userid
     try{
   		$usersBets = UsersBets::fetchUsersBetsById($_SESSION['userId']);
 

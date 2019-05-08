@@ -11,8 +11,7 @@ class LoginController{
    * @ApiReturn(type="boolean")
    */
   public function login(){
-    // TODO : remove when not in dev
-    // Allow from any origin
+
     if (isset($_SERVER['HTTP_ORIGIN'])) {
       header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
       header('Access-Control-Allow-Credentials: true');
@@ -81,7 +80,7 @@ class LoginController{
       session_destroy();
       $isLoggedOut = true;
     }
-    // TODO : remove when not in dev
+
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');
     echo $isLoggedOut;
@@ -97,8 +96,7 @@ class LoginController{
    * @ApiReturn(type="boolean")
    */
   public function createAccount(){
-    // TODO : remove when not in dev
-    // Allow from any origin
+
     if (isset($_SERVER['HTTP_ORIGIN'])) {
       header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
       header('Access-Control-Allow-Credentials: true');
