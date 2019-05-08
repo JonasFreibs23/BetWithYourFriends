@@ -2,6 +2,14 @@
 
 > Site où l’on peut faire des paris sans argent, mais avec des petits gains tel que des cafés ou autres nourritures. L’idée est que chaque utilisateur peut créer un événement dans un groupe d’ami, sur lequel les membres peuvent ou non parier.
 
+## Backend 
+
+Run php unit test : 
+
+```
+./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/EmailTest
+```
+
 ## Frontend
 
 ### Build Setup
