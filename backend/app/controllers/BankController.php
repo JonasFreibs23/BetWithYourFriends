@@ -77,7 +77,7 @@ class BankController extends BaseController
 
   }
 
-  public static function createTrade(trade)
+  public static function createTrade($trade)
   {
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -124,6 +124,16 @@ class BankController extends BaseController
         }
 
     }
+  }
+  public function fetchNameId()
+  {
+    parent::checkIsLogged();
+    // TODO : remove when not in dev
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Credentials: true');
+    header('Content-type: application/json');
+
+    echo json_encode(Users::fetchNameId());
   }
 
 }

@@ -92,4 +92,16 @@ class Users extends Model implements JsonSerializable
     return $statement->execute();
   }
 
+  public static function fetchNameId()
+  {
+    $dbh = App::get('dbh');
+
+    $req = "SELECT id,name FROM users";
+    $statement = $dbh->prepare($req);
+    $statement->execute();
+
+    return $statement->fetchAll();
+  }
+
+
 }
