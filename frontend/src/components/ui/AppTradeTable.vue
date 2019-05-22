@@ -1,34 +1,33 @@
 <template>
   <div>
-<!--
-<h2>Your Trades</h2>
-  <div class="md-layout">
-    <swiper :options="swiperOptions">
-      <swiper-slide v-for="trade in trades.slice().reverse()" :key="trade.userIdAsk">
-        <app-card :tradeId="trade.userIdAsk" class="md-layout-item">
-            <template slot="idAsk">{{trade.userIdAsk}}</template>
-            <template slot="idAccept">{{trade.userIdAccept}}</template>
-            <template slot="isPaid">{{trade.isPaid}}</template>
-            <template slot="isAccepted">{{trade.isAccepted}}</template>
-            <template slot="value">{{trade.value}}</template>
-        </app-card>
-      </swiper-slide>
-      <div class="swiper-button-prev" slot="button-prev"></div>
-      <div class="swiper-button-next" slot="button-next"></div>
-    </swiper>
+    <h2>Your Trades</h2>
+    <p>{{ trades }}</p>
+    <div class="md-layout">
+      <swiper :options="swiperOptions">
+        <swiper-slide v-for="trade in trades.slice().reverse()" :key="trade.userIdAsk">
+          <app-card :tradeId="trade.userIdAsk" class="md-layout-item">
+              <template slot="idAsk">{{trade.userIdAsk}}</template>
+              <template slot="idAccept">{{trade.userIdAccept}}</template>
+              <template slot="isPaid">{{trade.isPaid}}</template>
+              <template slot="isAccepted">{{trade.isAccepted}}</template>
+              <template slot="value">{{trade.value}}</template>
+          </app-card>
+        </swiper-slide>
+        <div class="swiper-button-prev" slot="button-prev"></div>
+        <div class="swiper-button-next" slot="button-next"></div>
+      </swiper>
+    </div>
   </div>
-   -->
-   </div>
 </template>
 
-<!-- <script>
-/*import TradeApi from '@/services/api/Trade'
-
+<script>
+import TradeApi from '@/services/api/Trade'
 
 export default {
   name: 'AppTradeTable',
   data () {
     return {
+      trades: [],
       swiperOptions: {
         slidesPerView: 4,
         spaceBetween: 0,
@@ -43,20 +42,14 @@ export default {
     }
   },
   methods: {
-    navigate (betId, betName, option1, option2) {
-      this.$router.push({name: 'EditBet', params: {id: betId, name: betName, option1: option1, option2: option2}})
-    },
-    searchOnTable () {
-      this.searched = searchByName(this.bets, this.search)
-    },
     created () {
       TradeApi.getUsersTrade().then(trades => {
         this.trades = trades
       })
     }
   }
-}*/
-</script>-->
+}
+</script>
 
 <style>
 .md-table-head{
