@@ -31,37 +31,36 @@ class Trade extends Model implements JsonSerializable
 
   public function getIsAccepted()
   {
-      return $this->$isAccepted;
+      return $this->isAccepted;
   }
 
   public function setisAccepted($val)
   {
-      $this->$isAccepted = $val;
+      $this->isAccepted = $val;
   }
 
   public function getIsPaid()
   {
-      return $this->$isPaid;
+      return $this->isPaid;
   }
 
   public function setIsPaid($val)
   {
-      $this->$isPaid = $val;
+      $this->isPaid = $val;
   }
 
   public function getValue()
   {
-      return $this->$value;
+      return $this->value;
   }
 
-  public function setValued($val)
+  public function setValue($val)
   {
-      $this->$value = $val;
+      $this->value = $val;
   }
 
   public static function fetchTradeById($userId)
   {
-    #return parent::fetchById("bank_accounts", "userId", $userId, "Banks");
     return parent::fetchById("trade", "userIdAsk", $userId, "Trade");
   }
 
@@ -72,12 +71,12 @@ class Trade extends Model implements JsonSerializable
 
   public function save()
   {
+
     $dbh = App::get('dbh');
     // TODO : vérifier bonne valeur passé à la db, check parameters
 
     $req = "INSERT INTO trade (userIdAsk, userIdAccept,  value) VALUES (?, ?, ?)";
     $statement = $dbh->prepare($req);
-    // TODO : pass by reference does not work
     $statement->bindParam(1, $this->userIdAsk);
     $statement->bindParam(2, $this->userIdAccept);
     $statement->bindParam(3, $this->value);

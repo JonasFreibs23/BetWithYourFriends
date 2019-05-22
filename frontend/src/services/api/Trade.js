@@ -14,7 +14,6 @@ export default {
   },
   createTrade (trade) {
     return axios.post('/createTrade', {
-      userIdAsk: trade.userIdAsk,
       userIdAccept: trade.userIdAccept,
       value: trade.value
     })

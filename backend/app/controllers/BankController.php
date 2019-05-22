@@ -1,8 +1,6 @@
 <?php
 
 require_once "app/controllers/BaseController.php";
-require_once "app/models/Banks.php";
-require_once "app/models/Trade.php";
 
 
 class BankController extends BaseController
@@ -77,8 +75,10 @@ class BankController extends BaseController
 
   }
 
-  public static function createTrade($trade)
+  public function createTrade()
   {
+
+    //var_dump("createTreade methode ");
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -99,29 +99,30 @@ class BankController extends BaseController
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         parent::checkIsLogged();
 
-        $_POST = json_decode(file_get_contents("php://input"), true);
-        //TODO : verif post
+        //if(isset($_POST["value"]))//&& isset($_POST["userIdAccept"]))//TODO
+        //{
+          $_POST = json_decode(file_get_contents("php://input"), true);
 
-        $trade = new Trade();
+          $trade = new Trade();
 
-        $idAsk=Users::getIdFromName($_POST["userIdAsk"]);
-        $idAccept =Users::getIdFromName($_POST["userIdAccept"]);
+          $idAccept=Users::getIdFromName($_POST["userIdAccept"]);
+          $idAsk=$_SESSION["userId"];
 
+          $trade->setUserIdAsk($idAsk);
+          $trade->setUserIdAccept($idAccept);
+          $trade->setValue($_POST["value"]);
 
-        $trade->setUserIdAsk($idAsk);
-        $trade->setUserIdAccept($idAccept);
-        $trade->setValue($_POST["value"]);
-
-        try{
-          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-          header('Access-Control-Allow-Credentials: true');
-          echo $trade->save();
-        }
-        catch(PDOException $err){
-          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-          header('Access-Control-Allow-Credentials: true');
-          echo $err->getMessage();
-        }
+          try{
+            header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+            header('Access-Control-Allow-Credentials: true');
+            echo $trade->save();
+          }
+          catch(PDOException $err){
+            header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+            header('Access-Control-Allow-Credentials: true');
+            echo $err->getMessage();
+          }
+      //  }
 
     }
   }

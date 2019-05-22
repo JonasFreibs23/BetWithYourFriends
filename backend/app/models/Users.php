@@ -77,7 +77,7 @@ class Users extends Model implements JsonSerializable
     $statement->bindParam(1, $name);
     $statement->execute();
 
-    return $statement;
+    return $statement->fetchAll()[0]["id"];
   }
 
   public function save(){
@@ -99,9 +99,7 @@ class Users extends Model implements JsonSerializable
     $req = "SELECT id,name FROM users";
     $statement = $dbh->prepare($req);
     $statement->execute();
-
+    
     return $statement->fetchAll();
   }
-
-
 }

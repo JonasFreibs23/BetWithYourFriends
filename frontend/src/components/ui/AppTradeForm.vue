@@ -1,13 +1,14 @@
 <template>
 <div class="app-form">
-    <form  class="md-layout md-alignment-center" submit="validate">
+    <form  class="md-layout md-alignment-center"  @submit.prevent="validate">
       <md-checkbox v-model="cbx" :value="cbx1">Cafe</md-checkbox>
       <md-checkbox v-model="cbx" :value="cbx2">Patisserie</md-checkbox>
       <md-checkbox v-model="cbx" :value="cbx3">McDo</md-checkbox>
       <div class="md-layout-item">
         <md-field>
+          <label for="userChoice">Users</label>
           <md-select v-model="userChoice" name="userChoice" id="userChoice" placeholder="Users">
-            <md-option  v-for="user in users.slice()" :key="user.id">{{user.name}}</md-option>
+            <md-option v-for="user in users" :key="user.id" :value="user.name">{{user.name}}</md-option>
           </md-select>
         </md-field>
       </div>
@@ -26,7 +27,6 @@ export default {
   name: 'AppForm',
   data: () => ({
     form: {
-      userIdAsk: null,
       userIdAccept: null,
       value: 0
     },
@@ -48,13 +48,14 @@ export default {
   },
   methods: {
     clearForm () {
-      this.$v.$reset()
-      this.form.userIdAsk = null
-      this.form.userIdccept = null
+      this.form.userIdAccept = null
       this.form.value = null
+      this.cbx = null
+      this.userChoice = null
     },
     validate () {
       this.form.value = this.cbx['value']
+      this.form.userIdAccept = this.userChoice
       TradeApi.createTrade(this.form).then(response => {
         if (response.data === 1) {
           this.tradeSaved = true
