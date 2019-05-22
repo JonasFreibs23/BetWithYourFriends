@@ -99,10 +99,11 @@ class BankController extends BaseController
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         parent::checkIsLogged();
 
-        //if(isset($_POST["value"]))//&& isset($_POST["userIdAccept"]))//TODO
-        //{
-          $_POST = json_decode(file_get_contents("php://input"), true);
+        $_POST = json_decode(file_get_contents("php://input"), true);
 
+
+        if(isset($_POST["value"]) && isset($_POST["userIdAccept"]))
+        {
           $trade = new Trade();
 
           $idAccept=Users::getIdFromName($_POST["userIdAccept"]);
@@ -122,7 +123,7 @@ class BankController extends BaseController
             header('Access-Control-Allow-Credentials: true');
             echo $err->getMessage();
           }
-      //  }
+      }
 
     }
   }

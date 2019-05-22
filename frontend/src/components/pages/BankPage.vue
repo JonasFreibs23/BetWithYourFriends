@@ -15,8 +15,7 @@
           <h2>Mon solde</h2>
           <p>{{ balance }}</p>
           <app-trade-form/>
-          <h2>Mes trades</h2>
-          <p>{{ trades }}</p>
+
         </app-main>
         <app-footer/>
     </div>
@@ -32,6 +31,7 @@ import AppFooter from '@/components/layout/AppFooter'
 import BankApi from '@/services/api/Bank'
 import TradeApi from '@/services/api/Trade'
 import AppTradeForm from '@/components/ui/AppTradeForm'
+// import AppTradeTable from '@/components/ui/AppTradeTable'
 
 export default {
   name: 'BankPage',
