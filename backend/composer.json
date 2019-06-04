@@ -1,4 +1,12 @@
 {
+    "autoload": {
+      "classmap": [
+        "app/controllers/BaseController.php",
+        "app/controllers/BankController.php",
+        "app/controllers/BetController.php",
+        "app/controllers/LoginController.php"
+      ]
+    },
     "require-dev": {
         "phpunit/phpunit": "^7"
     },

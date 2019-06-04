@@ -12,7 +12,7 @@
         </md-card-header>
 
         <md-card-content>
-        Les différentes options à chois sont
+        Les différentes options à choix sont
           <dl>
             <dt>
               Option 1

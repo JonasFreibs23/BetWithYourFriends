@@ -84,7 +84,6 @@ export default {
           setTimeout(function () {
             this.$router.push('/home')
           }.bind(this), 2000)
-          // TODO SHOW disconnect button
         } else {
           this.loginFailed = true
         }
