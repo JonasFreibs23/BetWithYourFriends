@@ -120,8 +120,6 @@ class BetController extends BaseController
    * @ApiReturn(type="boolean")
    */
   public function applyToBet(){
-
-
     // TODO : remove when not in dev
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");

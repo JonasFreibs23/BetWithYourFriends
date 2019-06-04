@@ -5,7 +5,6 @@ require_once "app/controllers/BaseController.php";
 
 class BankController extends BaseController
 {
-
   /**
    * @ApiDescription(section="BankController", description="Get user balance")
    * @ApiMethod(type="get")
@@ -25,28 +24,92 @@ class BankController extends BaseController
     echo json_encode(Banks::fetchBankById($_SESSION['userId']));
   }
 
-  public function getUserTrades()
+  /**
+   * @ApiDescription(section="BankController", description="Get user trade to be acceted")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/getUserTradesToBeAccepted")
+   * @ApiReturn(type="json", sample="{
+   *  'tradesToBeAccepted':'Trade',
+   * }")
+   */
+  public function getUserTradesToBeAccepted()
   {
     parent::checkIsLogged();
     // TODO : remove when not in dev
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');
     header('Content-type: application/json');
-    //var_dump("just avant appel");
-    echo json_encode(Trade::fetchTradeById($_SESSION['userId']));
+    echo json_encode(Trade::fetchTradeToBeAcceptedByName($_SESSION['userId']));
   }
 
+  /**
+   * @ApiDescription(section="BankController", description="Get user trade to be paid")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/getUserTradesToBePaid")
+   * @ApiReturn(type="json", sample="{
+   *  'tradesToBePaid':'Trade',
+   * }")
+   */
+  public function getUserTradesToBePaid()
+  {
+    parent::checkIsLogged();
+    // TODO : remove when not in dev
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Credentials: true');
+    header('Content-type: application/json');
+    echo json_encode(Trade::fetchTradeToBePaidByName($_SESSION['userId']));
+  }
+
+  /**
+   * @ApiDescription(section="BankController", description="Get user trade finished")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/getUserTradesFinished")
+   * @ApiReturn(type="json", sample="{
+   *  'tradesFinished':'Trade',
+   * }")
+   */
+  public function getUserTradesFinished()
+  {
+    parent::checkIsLogged();
+    // TODO : remove when not in dev
+    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Credentials: true');
+    header('Content-type: application/json');
+    echo json_encode(Trade::fetchTradeFinished($_SESSION['userId']));
+  }
+
+  /**
+   * @ApiDescription(section="BankController", description="Get all the users by their name")
+   * @ApiMethod(type="get")
+   * @ApiRoute(name="/fetchNameId")
+   * @ApiReturn(type="json", sample="{
+   *  'users':'Users',
+   * }")
+   */
+  public function fetchNameId()
+  {
+     parent::checkIsLogged();
+     // TODO : remove when not in dev
+     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+     header('Access-Control-Allow-Credentials: true');
+     header('Content-type: application/json');
+
+     echo json_encode(Users::fetchNameId());
+  }
+
+  /**
+   * @ApiDescription(section="BankController", description="Edit balance when a bet is finished")
+   * @ApiMethod(type="get")
+   */
   public static function editBalance($betId,$betWinningOpt)
   {
-    $dbhPrice=App::get('dbh');
-    $reqPrice="SELECT participationPrice FROM bets WHERE id=?";
+    $dbhPrice = App::get('dbh');
+    $reqPrice = "SELECT participationPrice FROM bets WHERE id=?";
     $statementPrice = $dbhPrice->prepare($reqPrice);
     $statementPrice->bindParam(1, $betId);
     $statementPrice->execute();
-
-    $res=$statementPrice->fetchAll();
-
-    $price=$res[0]["participationPrice"];
+    $resultPrice = $statementPrice->fetchAll();
+    $price = $resultPrice[0]["participationPrice"];
 
     $dbh = App::get('dbh');
     $req = "SELECT * FROM users_bets WHERE users_bets.betId = ?";
@@ -55,30 +118,31 @@ class BankController extends BaseController
     $statement->execute();
 
     while ($row = $statement->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-
-      $dbhWinner=App::get('dbh');
+      $dbhWinner = App::get('dbh');
       $reqWinner = "SELECT winOpt1,winOpt2 FROM Bets WHERE id = ?";
       $statementWin = $dbh->prepare($reqWinner);
       $statementWin->bindParam(1, $row[1]);
       $statementWin->execute();
-      $r=$statementWin->fetchAll();
+      $resultWinner = $statementWin->fetchAll();
 
-      if($r[0]["winOpt1"]==$betWinningOpt)
+      if($resultWinner[0]["winOpt1"]==$betWinningOpt)
       {
-        $w='0';
+        $winningOption='0';
       }
       else {
-        $w='1';
+        $winningOption='1';
       }
-      Banks::edit($row[0],$row[1],$row[2],$price,$w);
+      Banks::edit($row[0],$row[1],$row[2],$price,$winningOption);
     }
-
   }
 
+  /**
+   * @ApiDescription(section="BankController", description="Create a new trade")
+   * @ApiMethod(type="post")
+   * @ApiRoute(name="/createTrade")
+   */
   public function createTrade()
   {
-
-    //var_dump("createTreade methode ");
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -100,7 +164,6 @@ class BankController extends BaseController
         parent::checkIsLogged();
 
         $_POST = json_decode(file_get_contents("php://input"), true);
-
 
         if(isset($_POST["value"]) && isset($_POST["userIdAccept"]))
         {
@@ -127,15 +190,54 @@ class BankController extends BaseController
 
     }
   }
-  public function fetchNameId()
-  {
-    parent::checkIsLogged();
-    // TODO : remove when not in dev
-    header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-    header('Access-Control-Allow-Credentials: true');
-    header('Content-type: application/json');
 
-    echo json_encode(Users::fetchNameId());
-  }
+  /**
+   * @ApiDescription(section="BankController", description="Apply accept a trade or pay a trade")
+   * @ApiMethod(type="post")
+   * @ApiRoute(name="/applyToTrade")
+   */
+  public function applyToTrade()
+  {
+    // TODO : remove when not in dev
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+        exit(0);
+    }
+
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      parent::checkIsLogged();
+
+      $_POST = json_decode(file_get_contents("php://input"), true);
+
+      //TODO : gerer les exeption PDO
+
+      // if(isset($_POST["tradeId"]) && ctype_digit($_POST["tradeId"]) && isset($_POST["tradeOpt"])) //TODO
+      // {
+
+        if($_POST["tradeOpt"]==0){
+          //Accepted
+          echo Trade::updateState($_POST["tradeId"]);
+
+        }
+        else{
+          //Refused
+          echo Trade::deleteById($_POST["tradeId"]);
+        }
+      //}
+   }
+ }
 
 }

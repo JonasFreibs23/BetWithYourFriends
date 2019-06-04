@@ -127,29 +127,24 @@ class Bets extends Model implements JsonSerializable
   public function save()
   {
     $dbh = App::get('dbh');
-    // TODO : vérifier bonne valeur passé à la db, check parameters
     $req = "INSERT INTO bets (title, description, eventDate, winOpt1, winOpt2, participationPrice) VALUES (?, ?, ?, ?, ?, ?)";
     $statement = $dbh->prepare($req);
-    // TODO : pass by reference does not work
     $statement->bindParam(1, $this->title);
     $statement->bindParam(2, $this->description);
     $statement->bindParam(3, $this->eventDate);
     $statement->bindParam(4, $this->winOpt1);
     $statement->bindParam(5, $this->winOpt2);
     $statement->bindParam(6, $this->participationPrice);
-
     return $statement->execute();
   }
 
   public function edit()
   {
     $dbh = App::get('dbh');
-
     $req = "UPDATE bets SET winningOption = ?, altered = TRUE WHERE id = ?";
     $statement = $dbh->prepare($req);
     $statement->bindParam(1, $this->winningOption);
     $statement->bindParam(2, $this->id);
-
     return $statement->execute();
   }
 

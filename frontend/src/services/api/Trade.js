@@ -7,8 +7,18 @@ axios.defaults.withCredentials = true
 
 export default {
   name: 'TradeApi',
-  getUserTrades () {
-    return axios.get('/getUserTrades').then(response => {
+  getUserTradesToBeAccepted () {
+    return axios.get('/getUserTradesToBeAccepted').then(response => {
+      return response.data
+    })
+  },
+  getUserTradesToBePaid () {
+    return axios.get('/getUserTradesToBePaid').then(response => {
+      return response.data
+    })
+  },
+  getUserTradesFinished () {
+    return axios.get('/getUserTradesFinished').then(response => {
       return response.data
     })
   },
@@ -16,6 +26,13 @@ export default {
     return axios.post('/createTrade', {
       userIdAccept: trade.userIdAccept,
       value: trade.value
+    })
+  },
+  applyToTrade (tradeId, tradeOpt) {
+    // TODO : dynamic userId
+    return axios.post('/applyToTrade', {
+      tradeId: tradeId,
+      tradeOpt: tradeOpt
     })
   }
 }

@@ -1,5 +1,5 @@
 <template>
-<div class="app-form">
+  <div class="app-trade-form">
     <form  class="md-layout md-alignment-center"  @submit.prevent="validate">
       <md-checkbox v-model="cbx" :value="cbx1">Cafe</md-checkbox>
       <md-checkbox v-model="cbx" :value="cbx2">Patisserie</md-checkbox>
@@ -16,7 +16,7 @@
             <md-button type="submit" class="md-primary" :disabled="sending">Valider</md-button>
       </md-card-actions>
     </form>
-</div>
+  </div>
 </template>
 
 <script>
