@@ -1,7 +1,5 @@
 <?php
 
-// dev
-
 return array(
     'host' => 'mysql:host=127.0.0.1',
     'username' => 'root',
@@ -14,6 +12,3 @@ return array(
     'relative_path' => __DIR__ . '../',
     'install_prefix' => 'bet/awa-g3-bet/backend',
 );
-
-// prod
-// TODO : Hide password

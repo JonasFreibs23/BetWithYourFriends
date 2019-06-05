@@ -29,7 +29,6 @@ export default {
     })
   },
   applyToTrade (tradeId, tradeOpt) {
-    // TODO : dynamic userId
     return axios.post('/applyToTrade', {
       tradeId: tradeId,
       tradeOpt: tradeOpt

@@ -41,8 +41,6 @@
 </style>
 
 <script>
-// TODO : implement logout and hide when not logged in
-
 export default {
   name: 'AppToolBar',
   data: () => ({

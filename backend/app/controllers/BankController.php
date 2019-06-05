@@ -15,7 +15,7 @@ class BankController extends BaseController
   public function getUserBalance()
   {
     parent::checkIsLogged();
-    // TODO : remove when not in dev
+
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');
 
@@ -43,7 +43,7 @@ class BankController extends BaseController
   public function getUserTradesToBeAccepted()
   {
     parent::checkIsLogged();
-    // TODO : remove when not in dev
+
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');
     header('Content-type: application/json');
@@ -61,7 +61,7 @@ class BankController extends BaseController
   public function getUserTradesToBePaid()
   {
     parent::checkIsLogged();
-    // TODO : remove when not in dev
+
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');
     header('Content-type: application/json');
@@ -79,7 +79,7 @@ class BankController extends BaseController
   public function getUserTradesFinished()
   {
     parent::checkIsLogged();
-    // TODO : remove when not in dev
+
     header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
     header('Access-Control-Allow-Credentials: true');
     header('Content-type: application/json');
@@ -97,7 +97,7 @@ class BankController extends BaseController
   public function fetchNameId()
   {
      parent::checkIsLogged();
-     // TODO : remove when not in dev
+
      header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
      header('Access-Control-Allow-Credentials: true');
      header('Content-type: application/json');
@@ -206,7 +206,7 @@ class BankController extends BaseController
    */
   public function applyToTrade()
   {
-    // TODO : remove when not in dev
+
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -230,19 +230,24 @@ class BankController extends BaseController
 
       $_POST = json_decode(file_get_contents("php://input"), true);
 
-      //TODO : gerer les exeption PDO
-
-      if(isset($_POST["tradeId"]) && ctype_digit($_POST["tradeId"]) && isset($_POST["tradeOpt"])) //TODO
+      if(isset($_POST["tradeId"]) && ctype_digit($_POST["tradeId"]) && isset($_POST["tradeOpt"]))
       {
-
-        if($_POST["tradeOpt"]==0){
-          //Accepted
-          echo Trade::updateState($_POST["tradeId"]);
-
+        try
+        {
+          if($_POST["tradeOpt"]==0){
+            //Accepted
+            echo Trade::updateState($_POST["tradeId"]);
+          }
+          else{
+            //Refused
+            echo Trade::deleteById($_POST["tradeId"]);
+          }
         }
-        else{
-          //Refused
-          echo Trade::deleteById($_POST["tradeId"]);
+        catch(PDOException $err)
+        {
+          header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+          header('Access-Control-Allow-Credentials: true');
+          echo $err->getMessage();
         }
       }
    }

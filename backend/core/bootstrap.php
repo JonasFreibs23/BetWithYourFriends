@@ -1,7 +1,5 @@
 <?php
 
-// TODO include the configuration file
-
 require 'core/Router.php';
 require 'core/Request.php';
 require 'core/App.php';

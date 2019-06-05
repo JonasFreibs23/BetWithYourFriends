@@ -61,7 +61,6 @@
 </template>
 
 <script>
-// TODO : Improve validation
 import { validationMixin } from 'vuelidate'
 import { required, minLength, minValue, numeric, alphaNum } from 'vuelidate/lib/validators'
 import BetsApi from '@/services/api/Bets'

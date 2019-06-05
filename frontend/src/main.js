@@ -11,7 +11,6 @@ import VueLocalStorage from 'vue-localstorage'
 
 Vue.config.productionTip = false
 
-// FIXME : Do not include everything
 Vue.use(VueMaterial)
 Vue.use(responsive)
 Vue.use(VueLocalStorage)

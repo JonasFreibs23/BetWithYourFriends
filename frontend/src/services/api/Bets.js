@@ -50,7 +50,6 @@ export default {
     })
   },
   applyToBet (betId, betOpt) {
-    // TODO : dynamic userId
     return axios.post('/applyToBet', {
       betId: betId,
       betOpt: betOpt
