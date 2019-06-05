@@ -17,7 +17,7 @@
 
                 <md-divider></md-divider>
 
-                <md-card-actions>
+                <md-card-actions v-if="!finished">
                     <md-button class="md-primary" @click.native="applyTrade(0)">
                         <slot name="optAccept"></slot>
                     </md-button>
@@ -38,7 +38,8 @@ import TradeApi from '@/services/api/Trade'
 export default {
   name: 'AppCardTrade',
   props: [
-    'tradeId'
+    'tradeId',
+    'finished'
   ],
   data: () => ({
     tradeSaved: false,
@@ -46,11 +47,11 @@ export default {
   }),
   methods: {
     applyTrade: function (tradeOpt) {
-      // TODO : remove hard coded user id
       if (this.$localStorage.get('authenticated') === 'true') {
         TradeApi.applyToTrade(this.tradeId, tradeOpt).then(response => {
           if (response.data === 1) {
             this.tradeSaved = true
+            window.bus.$emit('refresh')
           } else {
             this.tradeNotSaved = true
           }

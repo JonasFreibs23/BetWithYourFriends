@@ -16,6 +16,8 @@ Vue.use(VueMaterial)
 Vue.use(responsive)
 Vue.use(VueLocalStorage)
 
+window.bus = new Vue()
+
 Vue.localStorage.set('authenticated', 'false')
 
 /* eslint-disable no-new */

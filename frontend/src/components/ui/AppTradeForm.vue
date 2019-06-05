@@ -61,6 +61,7 @@ export default {
           this.tradeSaved = true
           this.sending = false
           this.clearForm()
+          window.bus.$emit('refresh')
         } else {
           this.tradeNotSaved = true
         }

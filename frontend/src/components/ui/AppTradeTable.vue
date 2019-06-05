@@ -1,10 +1,10 @@
 <template>
-  <div class="app-trade-table">
+  <div>
     <h2>Vos trocs en cours : choisissez de les accepter ou pas </h2>
     <div class="md-layout">
       <swiper :options="swiperOptions">
         <swiper-slide v-for="trade in tradesToBeAccepted.slice()" :key="trade.tradeId">
-          <app-card-trade :tradeId="trade.tradeId" class="md-layout-item">
+          <app-card-trade :tradeId="trade.tradeId" :finished="false" class="md-layout-item">
               <template slot="userIdAsk">{{trade.userIdAsk}}</template>
               <template slot="value">{{trade.value}}</template>
               <template slot="description">{{trade.userIdAccept}}</template>
@@ -12,15 +12,15 @@
               <template slot="optRefuse">{{refuse}}</template>
           </app-card-trade>
         </swiper-slide>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
+        <div v-if="countOptionOne > 1" class="swiper-button-prev" slot="button-prev"></div>
+        <div v-if="countOptionOne > 1" class="swiper-button-next" slot="button-next"></div>
       </swiper>
     </div>
     <h2>Vos trocs en payement : notez payé quand le troc a été payé </h2>
     <div class="md-layout">
       <swiper :options="swiperOptions">
         <swiper-slide v-for="trade in tradesToBePaid.slice().reverse()" :key="trade.tradeId">
-          <app-card-trade :tradeId="trade.tradeId" class="md-layout-item">
+          <app-card-trade :tradeId="trade.tradeId" :finished="false" class="md-layout-item">
               <template slot="userIdAsk">{{trade.userIdAsk}}</template>
               <template slot="value">{{trade.value}}</template>
               <template slot="description">{{trade.userIdAccept}}</template>
@@ -28,22 +28,22 @@
               <template slot="optRefuse">{{notPaid}}</template>
           </app-card-trade>
         </swiper-slide>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
+        <div v-if="countOptionTwo > 1" class="swiper-button-prev" slot="button-prev"></div>
+        <div v-if="countOptionTwo > 1" class="swiper-button-next" slot="button-next"></div>
       </swiper>
     </div>
     <h2>Historique de vos trocs </h2>
     <div class="md-layout">
       <swiper :options="swiperOptions">
         <swiper-slide v-for="trade in tradesFinished.slice().reverse()" :key="trade.tradeId">
-          <app-card-trade :tradeId="trade.tradeId" class="md-layout-item">
+          <app-card-trade :tradeId="trade.tradeId" :finished="true" class="md-layout-item">
               <template slot="userIdAsk">{{trade.userIdAsk}}</template>
               <template slot="value">{{trade.value}}</template>
               <template slot="description">{{trade.userIdAccept}}</template>
           </app-card-trade>
         </swiper-slide>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
+        <div v-if="countOptionThree > 1" class="swiper-button-prev" slot="button-prev"></div>
+        <div v-if="countOptionThree > 1" class="swiper-button-next" slot="button-next"></div>
       </swiper>
     </div>
   </div>
@@ -71,6 +71,9 @@ export default {
     refuse: 'refuser',
     paid: 'payé',
     notPaid: 'non payé',
+    countOptionOne: 0,
+    countOptionTwo: 0,
+    countOptionThree: 0,
     swiperOptions: {
       slidesPerView: 1,
       spaceBetween: 0,
@@ -97,20 +100,37 @@ export default {
       }
     }
   }),
-  beforeCreate () {
-    TradeApi.getUserTradesToBeAccepted().then(trades => {
-      this.tradesToBeAccepted = trades
+  mounted () {
+    window.bus.$on('refresh', () => {
+      this.getUserTradesToBeAccepted()
+      this.getUserTradesToBePaid()
+      this.getUserTradesFinished()
     })
-    TradeApi.getUserTradesToBePaid().then(trades => {
-      this.tradesToBePaid = trades
-    })
-    TradeApi.getUserTradesFinished().then(trades => {
-      this.tradesFinished = trades
-    })
+    this.getUserTradesToBeAccepted()
+    this.getUserTradesToBePaid()
+    this.getUserTradesFinished()
   },
   methods: {
     navigate (link) {
       this.$router.push(link)
+    },
+    getUserTradesToBeAccepted () {
+      TradeApi.getUserTradesToBeAccepted().then(trades => {
+        this.tradesToBeAccepted = trades
+        this.countOptionOne = trades.length
+      })
+    },
+    getUserTradesToBePaid () {
+      TradeApi.getUserTradesToBePaid().then(trades => {
+        this.tradesToBePaid = trades
+        this.countOptionTwo = trades.length
+      })
+    },
+    getUserTradesFinished () {
+      TradeApi.getUserTradesFinished().then(trades => {
+        this.tradesFinished = trades
+        this.countOptionThree = trades.length
+      })
     }
   }
 }
@@ -118,12 +138,12 @@ export default {
 
 <style scoped>
 h2{
-    text-align: left;
-    margin-left: 20px;
+  text-align: left;
+  margin-left: 20px;
 }
 .md-button{
   width: 200px;
   margin-left: 40px;
   margin-right: 40px;
-  }
+}
 </style>

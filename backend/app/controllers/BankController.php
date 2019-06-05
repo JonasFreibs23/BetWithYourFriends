@@ -224,8 +224,8 @@ class BankController extends BaseController
 
       //TODO : gerer les exeption PDO
 
-      // if(isset($_POST["tradeId"]) && ctype_digit($_POST["tradeId"]) && isset($_POST["tradeOpt"])) //TODO
-      // {
+      if(isset($_POST["tradeId"]) && ctype_digit($_POST["tradeId"]) && isset($_POST["tradeOpt"])) //TODO
+      {
 
         if($_POST["tradeOpt"]==0){
           //Accepted
@@ -236,7 +236,7 @@ class BankController extends BaseController
           //Refused
           echo Trade::deleteById($_POST["tradeId"]);
         }
-      //}
+      }
    }
  }
 

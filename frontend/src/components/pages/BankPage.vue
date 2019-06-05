@@ -11,7 +11,7 @@
         <app-header>
         Mon compte en banque
         </app-header>
-        <app-main>
+        <app-main class="main">
           <h2>Mon solde</h2>
           <p>{{ balance }}</p>
           <app-trade-form/>
@@ -67,4 +67,8 @@ export default {
 </script>
 
 <style scoped>
+.main{
+  width: 80%;
+  margin: auto;
+}
 </style>

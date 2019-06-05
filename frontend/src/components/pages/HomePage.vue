@@ -128,8 +128,8 @@ export default {
 
 <style scoped>
 h2{
-    text-align: left;
-    margin-left: 20px;
+  text-align: left;
+  margin-left: 20px;
 }
 .md-button{
   width: 200px;
