@@ -11,9 +11,11 @@
         <app-header>
         Mon compte en banque
         </app-header>
-        <app-main>
+        <app-main class="main">
           <h2>Mon solde</h2>
           <p>{{ balance }}</p>
+          <app-trade-form/>
+          <app-trade-table/>
         </app-main>
         <app-footer/>
     </div>
@@ -27,6 +29,8 @@ import AppMobileNav from '@/components/ui/AppMobileNav'
 import AppMain from '@/components/layout/AppMain'
 import AppFooter from '@/components/layout/AppFooter'
 import BankApi from '@/services/api/Bank'
+import AppTradeForm from '@/components/ui/AppTradeForm'
+import AppTradeTable from '@/components/ui/AppTradeTable'
 
 export default {
   name: 'BankPage',
@@ -36,11 +40,14 @@ export default {
     AppNav,
     AppMobileNav,
     AppMain,
-    AppFooter
+    AppFooter,
+    AppTradeForm,
+    AppTradeTable
   },
   data () {
     return {
-      balance: null
+      balance: null,
+      trades: null
     }
   },
   beforeCreate () {
@@ -60,4 +67,8 @@ export default {
 </script>
 
 <style scoped>
+.main{
+  width: 80%;
+  margin: auto;
+}
 </style>

@@ -31,12 +31,12 @@ class LoginController{
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
       $_POST = json_decode(file_get_contents("php://input"), true);
 
       if(isset($_POST["password"]) && isset($_POST["username"])) {
         $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-        // TODO : vérifier bonne valeur passé à la db, check parameters
         try{
           $user = new Users();
           $user->setName($_POST["username"]);
@@ -121,7 +121,6 @@ class LoginController{
 
       if(isset($_POST["password"]) && isset($_POST["username"]) && isset($_POST["email"]))
       {
-        // TODO : vérifier bonne valeur passé à la db, check parameters
         $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
         try
         {

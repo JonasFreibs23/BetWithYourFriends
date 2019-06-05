@@ -11,5 +11,11 @@ $router->define([
   'login' => 'LoginController@login',
   'logout' => 'LoginController@logout',
   'createAccount' => 'LoginController@createAccount',
-  'getUserBalance' => 'BankController@getUserBalance'
+  'getUserBalance' => 'BankController@getUserBalance',
+  'getUserTradesToBeAccepted' => 'BankController@getUserTradesToBeAccepted',
+  'getUserTradesToBePaid' => 'BankController@getUserTradesToBePaid',
+  'createTrade' => 'BankController@createTrade',
+  'fetchNameId' => 'BankController@fetchNameId',
+  'applyToTrade' => 'BankController@applyToTrade',
+  'getUserTradesFinished' => 'BankController@getUserTradesFinished'
 ]);

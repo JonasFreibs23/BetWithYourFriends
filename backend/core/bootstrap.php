@@ -9,6 +9,7 @@ require 'core/database/Connection.php';
 require "core/database/Model.php";
 require "app/models/Bets.php";
 require "app/models/Users.php";
+require "app/models/Trade.php";
 require "app/models/UsersBets.php";
 require "app/models/Banks.php";
 
