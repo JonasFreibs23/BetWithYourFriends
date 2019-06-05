@@ -1,59 +1,35 @@
 <template>
-  <div>
-    <form novalidate>
-      <md-steppers :md-active-step.sync="active" md-vertical md-linear>
-        <md-step id="first" md-label="Création d'un compte sur le site de pari" md-description="Nom d'utilisateur" :md-editable="true" :md-done.sync="first">
-          <md-subheader>
-          Entrer un nom d'utilisateur
-          </md-subheader>
-          <div class="md-layout md-gutter">
-            <md-field :class="getValidationClass('username')">
-              <md-input v-model="form.username" name="username" class="md-layout-item" autofocus tabindex=1 />
-              <span class="md-error" v-if="!$v.form.username.required">Le nom de l'utilisateur est requis</span>
-              <span class="md-error" v-else-if="!$v.form.username.minlength">Le nom de l'utilisateur doit comporter au moins 2 caractères</span>
-              <span class="md-error" v-else-if="!$v.form.username.alphanum">Le nom de l'utilisateur doit comporter uniquement des cararctères alphanumérique</span>
-            </md-field>
-          </div>
-          <md-button class="md-raised md-primary" @click="setDone('first', 'second')" tabindex=2 >Valider le nom d'utilisateur</md-button>
-        </md-step>
-
-        <md-step id="second" md-label="Votre adresse email" :md-error="secondStepError" :md-editable="true" :md-done.sync="second">
-          <md-subheader>
-          Entrer une adresse email
-          </md-subheader>
-          <p>
-          Votre adresse email est utilisé uniquement dans le but d'exploiter pleinement les fonctionalités de ce site
-          </p>
-          <div class="md-layout md-gutter">
-            <md-field :class="getValidationClass('email')">
-              <md-input v-model="form.email" name="email" class="md-layout-item" tabindex=3 />
-              <span class="md-error" v-if="!$v.form.email.required">L'adresse email est requise</span>
-              <span class="md-error" v-else-if="!$v.form.email.email">L'adresse email est invalide</span>
-            </md-field>
-          </div>
-          <md-button class="md-raised md-primary" @click="setDone('second', 'third')" tabindex=4 >Valider l'adresse email</md-button>
-        </md-step>
-
-        <md-step id="third" md-label="Choisir un mot de passe" :md-editable="true" :md-done.sync="third">
-          <md-subheader>
-          Entrer un mot de passe
-          </md-subheader>
-          <p>Dernière étape avant de pouvoir participer à des paris</p>
-          <div class="md-layout md-gutter">
-            <md-field :class="getValidationClass('password')">
-              <md-input type="password" v-model="form.password" name="password" class="md-layout-item" tabindex=5 />
-              <span class="md-error" v-if="!$v.form.password.required">Le mot de passe est requis</span>
-              <span class="md-error" v-else-if="!$v.form.password.minlength">Le mot de passe doit comporter au moins 3 caractères</span>
-              <span class="md-error" v-else-if="!$v.form.password.alphaNum">Le mot de passe doit comporter uniquement des caractères alphanumérique</span>
-            </md-field>
-          </div>
-          <md-button class="md-raised md-primary" @click="setDone('third')" tabindex=6 >Valider la création du compte</md-button>
-        </md-step>
-        <span class="form-error" v-if="!isFormCorrect">Au moins un champ est invalide</span>
-      </md-steppers>
-      <md-snackbar :md-active.sync="creationSucced">La nouvel utilisateur {{ form.username }} a été créé !</md-snackbar>
-      <md-snackbar :md-active.sync="creationFailed">La création du nouvel utilisateur a échoué !</md-snackbar>
+  <div class="app-form">
+    <form class="md-layout md-alignment-center" novalidate @submit.prevent="validateUser">
+      <md-card class="md-layout-item md-size-80 md-small-size-100 md-xsmall-size-100">
+        <md-card-content>
+          <md-field :class="getValidationClass('username')">
+            <label>Entrer votre nom d'utilisateur</label>
+            <md-input v-model="form.username" autofocus></md-input>
+            <span class="md-error" v-if="!$v.form.username.required">Le nom de l'utilisateur est requis</span>
+            <span class="md-error" v-else-if="!$v.form.username.minlength">Le nom de l'utilisateur doit comporter au moins 2 caractères</span>
+            <span class="md-error" v-else-if="!$v.form.username.alphanum">Le nom de l'utilisateur doit comporter uniquement des cararctères alphanumérique</span>
+          </md-field>
+          <md-field :class="getValidationClass('email')">
+            <label>Entrer votre adresse email</label>
+            <md-input v-model="form.email"></md-input>
+            <span class="md-error" v-if="!$v.form.email.required">L'adresse email est requise</span>
+            <span class="md-error" v-else-if="!$v.form.email.email">L'adresse email est invalide</span>
+          </md-field>
+          <md-field :class="getValidationClass('password')">
+            <label>Entrer un mot de passe</label>
+            <md-input type="password" v-model="form.password"></md-input>
+            <span class="md-error" v-if="!$v.form.password.required">Le mot de passe est requis</span>
+            <span class="md-error" v-else-if="!$v.form.password.minlength">Le mot de passe doit comporter au moins 3 caractères</span>
+            <span class="md-error" v-else-if="!$v.form.password.alphaNum">Le mot de passe doit comporter uniquement des caractères alphanumérique</span>
+          </md-field>
+          <md-button type="submit" class="md-primary">Créer un compte</md-button>
+          <span class="form-error" v-if="!isFormCorrect">Au moins un champ est invalide</span>
+        </md-card-content>
+      </md-card>
     </form>
+    <md-snackbar :md-active.sync="creationSucced">Le nouvel utilisateur {{ form.username }} a été créé !</md-snackbar>
+    <md-snackbar :md-active.sync="creationFailed">La création du nouvel utilisateur a échoué ! {{ errorMsg }}</md-snackbar>
   </div>
 </template>
 
@@ -61,8 +37,6 @@
 import { validationMixin } from 'vuelidate'
 import { required, minLength, alphaNum, email } from 'vuelidate/lib/validators'
 import LoginApi from '@/services/api/Login'
-
-// TODO add validation
 
 export default {
   name: 'AppStepper',
@@ -76,10 +50,12 @@ export default {
     isFormCorrect: true,
     creationSucced: null,
     creationFailed: null,
+    errorMsg: null,
     form: {
       username: null,
       email: null,
-      password: null
+      password: null,
+      errorMessage: ''
     }
   }),
   validations: {
@@ -103,28 +79,17 @@ export default {
   methods: {
     getValidationClass (fieldName) {
       const field = this.$v.form[fieldName]
-
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
         }
       }
     },
-    setDone (id, index) {
-      this[id] = true
+    validateUser () {
+      this.$v.$touch()
 
-      this.secondStepError = null
-      if (index) {
-        this.active = index
-      } else {
-        this.$v.$touch()
-
-        if (!this.$v.$invalid) {
-          this.isFormCorrect = true
-          this.saveUser()
-        } else {
-          this.isFormCorrect = false
-        }
+      if (!this.$v.$invalid) {
+        this.saveUser()
       }
     },
     saveUser () {
@@ -136,6 +101,7 @@ export default {
               this.$router.push('/login')
             }.bind(this), 2000)
           } else {
+            this.errorMsg = result.data
             this.creationFailed = true
           }
         })

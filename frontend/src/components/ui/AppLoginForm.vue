@@ -81,11 +81,9 @@ export default {
         if (result.data === 1) {
           this.loginSucces = true
           this.$localStorage.set('authenticated', 'true')
-          console.log(this.$localStorage.get('authenticated'))
           setTimeout(function () {
             this.$router.push('/home')
           }.bind(this), 2000)
-          // TODO SHOW disconnect button
         } else {
           this.loginFailed = true
         }

@@ -38,6 +38,8 @@ class Bets extends Model implements JsonSerializable
 
   public function setTitle($value)
   {
+    if(strlen($value) < 3)
+      throw new Exception("Title length is smaller than 3");
     $this->title = $value;
   }
 
@@ -48,6 +50,8 @@ class Bets extends Model implements JsonSerializable
 
   public function setDescription($value)
   {
+    if(strlen($value) < 3)
+      throw new Exception("Description length is smaller than 3");
     $this->description = $value;
   }
 
@@ -58,6 +62,9 @@ class Bets extends Model implements JsonSerializable
 
   public function setEventDate($value)
   {
+    $date_now = date("Y-m-d");
+    if($value <= $date_now)
+      throw new Exception("The date is not upcoming");
     $this->eventDate = $value;
   }
 
@@ -68,6 +75,10 @@ class Bets extends Model implements JsonSerializable
 
   public function setWinOpt1($value)
   {
+    if(strlen($value) < 1)
+      throw new Exception("Option 1 length is smaller than 1");
+    if(!ctype_alnum($value))
+      throw new Exception("Option 2 does not contain only alpha numeric");
     $this->winOpt1 = $value;
   }
 
@@ -78,6 +89,10 @@ class Bets extends Model implements JsonSerializable
 
   public function setWinOpt2($value)
   {
+    if(strlen($value) < 1)
+      throw new Exception("Option 2 length is smaller than 1");
+    if(!ctype_alnum($value))
+      throw new Exception("Option 2 does not contain only alpha numeric");
     $this->winOpt2 = $value;
   }
 
@@ -88,6 +103,10 @@ class Bets extends Model implements JsonSerializable
 
   public function setParticipationPrice($value)
   {
+    if(!ctype_digit($_POST["participationPrice"]))
+      throw new Exception("Partication price is not numeric");
+    if($value < 0)
+      throw new Exception("Partication price is smaller than 0");
     $this->participationPrice = $value;
   }
 
