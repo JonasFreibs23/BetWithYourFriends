@@ -33,15 +33,14 @@ class LoginController
       exit(0);
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST')
-    {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
       $_POST = json_decode(file_get_contents("php://input"), true);
 
       if(isset($_POST["password"]) && isset($_POST["username"]))
       {
         $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-        // TODO : vérifier bonne valeur passé à la db, check parameters
         try{
           header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
           header('Access-Control-Allow-Credentials: true');
@@ -126,7 +125,6 @@ class LoginController
 
       if(isset($_POST["password"]) && isset($_POST["username"]) && isset($_POST["email"]))
       {
-        // TODO : vérifier bonne valeur passé à la db, check parameters
         $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
         try
         {

@@ -1,6 +1,8 @@
 <?php
 
 $router->define([
+  '' => 'IndexController',
+  '/' => 'IndexController',
   'getBets' => 'BetController@getBets',
   'getTrendingBets' => 'BetController@getTrendingBets',
   'createBet' => 'BetController@createBet',
