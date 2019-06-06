@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mer. 05 juin 2019 à 08:16
+-- Généré le :  jeu. 06 juin 2019 à 11:19
 -- Version du serveur :  5.7.17
 -- Version de PHP :  7.1.3
 
@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `bank_accounts` (
   `userId` int(11) NOT NULL,
   `balance` int(11) NOT NULL DEFAULT '10000'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Déchargement des données de la table `bank_accounts`
@@ -41,7 +41,7 @@ INSERT INTO `bank_accounts` (`userId`, `balance`) VALUES
 (1, 10000),
 (3, 10000),
 (24, 10000),
-(25, -1517),
+(25, 2152),
 (26, 12000),
 (27, 10000),
 (28, 37000);
@@ -147,16 +147,16 @@ CREATE TABLE `trade` (
   `isAccepted` tinyint(1) DEFAULT NULL,
   `isPaid` tinyint(1) DEFAULT NULL,
   `value` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Déchargement des données de la table `trade`
 --
 
 INSERT INTO `trade` (`tradeId`, `userIdAsk`, `userIdAccept`, `isAccepted`, `isPaid`, `value`) VALUES
-(40, 25, 2, NULL, NULL, 3000),
 (36, 25, 28, NULL, NULL, 10000),
-(39, 28, 25, 1, 1, 3000);
+(39, 28, 25, 1, 1, 3000),
+(40, 25, 2, NULL, NULL, 3000);
 
 -- --------------------------------------------------------
 
