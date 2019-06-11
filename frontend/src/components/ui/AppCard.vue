@@ -18,6 +18,9 @@
                 <md-divider></md-divider>
 
                 <md-card-actions>
+                    <div>
+                    Partication price : {{this.participationPrice}}
+                    </div>
                     <md-button class="md-primary" @click.native="applyBet(0)">
                         <slot name="opt1"></slot>
                     </md-button>
@@ -38,7 +41,8 @@ import BetsApi from '@/services/api/Bets'
 export default {
   name: 'AppCard',
   props: [
-    'betId'
+    'betId',
+    'participationPrice'
   ],
   data: () => ({
     betSaved: false,
@@ -48,9 +52,11 @@ export default {
   methods: {
     applyBet: function (betOpt) {
       if (this.$localStorage.get('authenticated') === 'true') {
-        BetsApi.applyToBet(this.betId, betOpt).then(response => {
+        BetsApi.applyToBet(this.betId, betOpt, this.participationPrice).then(response => {
           if (response.data === 1) {
             this.betSaved = true
+            window.bus.$emit('refresh')
+            console.log('send refresh')
           } else {
             this.betNotSaved = true
             this.errorMsg = response.data

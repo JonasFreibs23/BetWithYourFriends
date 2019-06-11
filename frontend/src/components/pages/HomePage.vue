@@ -19,12 +19,13 @@
             <div class="md-layout">
               <swiper :options="swiperOptions">
                 <swiper-slide v-for="bet in bets.slice().reverse()" :key="bet.id">
-                  <app-card :betId="bet.id" class="md-layout-item">
+                  <app-card :betId="bet.id" :participationPrice="bet.participationPrice" class="md-layout-item">
                       <template slot="title">{{bet.title}}</template>
                       <template slot="date">{{bet.eventDate}}</template>
                       <template slot="description">{{bet.description}}</template>
                       <template slot="opt1">{{bet.winOpt1}}</template>
                       <template slot="opt2">{{bet.winOpt2}}</template>
+                      <template slot="participationPrice">{{bet.participationPrice}}</template>
                   </app-card>
                 </swiper-slide>
                 <div class="swiper-button-prev" slot="button-prev"></div>
@@ -35,7 +36,7 @@
             <div class="md-layout">
               <swiper :options="swiperOptions">
                 <swiper-slide v-for="trendingBet in trendingBets.slice().reverse()" :key="trendingBet.id">
-                  <app-card :betId="trendingBet.id" class="md-layout-item">
+                  <app-card :betId="trendingBet.id" :participationPrice="trendingBet.participationPrice" class="md-layout-item">
                       <template slot="title">{{trendingBet.title}}</template>
                       <template slot="date">{{trendingBet.eventDate}}</template>
                       <template slot="description">{{trendingBet.description}}</template>

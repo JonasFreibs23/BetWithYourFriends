@@ -53,7 +53,17 @@ export default {
   beforeCreate () {
     if (this.$localStorage.get('authenticated') === 'false') {
       this.$router.push('/login')
-    } else {
+    }
+  },
+  mounted () {
+    window.bus.$on('refresh', () => {
+      console.log('should refresh')
+      this.getUserBalance()
+    })
+    this.getUserBalance()
+  },
+  methods: {
+    getUserBalance () {
       BankApi.getUserBalance().then(data => {
         if (data.length > 0) {
           this.balance = data[0].balance
